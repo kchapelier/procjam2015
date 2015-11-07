@@ -24,6 +24,8 @@
     "migl-input": "^2.0.1",
     "migl-gameloop": "^1.2.1",
     "cellular-automata": "^0.1.0",
-    "migl-rng": "^1.0.0"
+    "migl-rng": "^1.0.0",
+    "poisson-disk-sampling": "git+https://github.com/kchapelier/poisson-disk-sampling.git",
+    "is-array": "^1.0.1"
   }
 }
