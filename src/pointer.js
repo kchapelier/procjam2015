@@ -4,9 +4,10 @@ var pointer = {
     movementX : 0,
     movementY : 0,
     requestPointerLock : function (document, element) {
-        var self = this,
-            exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock,
-            requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+        var self = this;
+
+        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
+        element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
         // Hook pointer lock state change events for different browsers
         document.addEventListener('pointerlockchange', lockChangeAlert, false);

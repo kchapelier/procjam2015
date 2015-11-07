@@ -2,14 +2,8 @@
 
 module.exports = {
     requestFullscreen: function (element) {
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        }
+        element.requestFullscreen = element.requestFullscreen || element.msRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+
+        element.requestFullscreen();
     }
 }

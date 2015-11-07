@@ -5,7 +5,7 @@ var THREE = require('three'),
     GameInput = require('migl-input'),
     renderer = require('./renderer'),
     Camera = require('./camera'),
-    camera = new Camera(50, renderer.screenWidth / renderer.screenHeight),
+    camera = new Camera(85, renderer.screenWidth / renderer.screenHeight),
     pointer = require('./pointer'),
     fullscreen = require('./fullscreen');
 
