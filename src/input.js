@@ -23,13 +23,21 @@ var input = new Input({
         keys: ['<right>', 'D', '<pad1-button16>', '<pad1-axis1-positive>'],
         group: 'axisH'
     },
-    viewY: {
+    viewZ: {
         keys: ['<pad1-axis4>'],
         group: 'axisViewV'
     },
     viewX: {
         keys: ['<pad1-axis3>'],
         group: 'axisViewH'
+    },
+    viewYPlus: {
+        keys: ['<pad1-button8>'],
+        group: 'axisViewY'
+    },
+    viewYMinus: {
+        keys: ['<pad1-button6>'],
+        group: 'axisViewY'
     }
 });
 
