@@ -29,7 +29,9 @@ var init = function init () {
     var leftCommand = input.commands.left,
         rightCommand = input.commands.right,
         upCommand = input.commands.up,
-        downCommand = input.commands.down;
+        downCommand = input.commands.down,
+        viewYCommand = input.commands.viewY,
+        viewXCommand = input.commands.viewX;
 
     var movement = new THREE.Vector3(0, 0, 0);
     var axisUp = new THREE.Vector3(0, 1, 0);
@@ -37,7 +39,7 @@ var init = function init () {
     loop.update = function(dt) {
         input.update(dt);
 
-        camera.setMousePosition(pointer.movementX, pointer.movementY, dt);
+        camera.setMousePosition(pointer.movementX + viewXCommand.value * 10, pointer.movementY + viewYCommand.value * 10, dt);
 
         if (leftCommand.active) {
             movement.x = leftCommand.value;

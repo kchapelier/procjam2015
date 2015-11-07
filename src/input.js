@@ -22,6 +22,14 @@ var input = new Input({
     right: {
         keys: ['<right>', 'D', '<pad1-button16>', '<pad1-axis1-positive>'],
         group: 'axisH'
+    },
+    viewY: {
+        keys: ['<pad1-axis4>'],
+        group: 'axisViewV'
+    },
+    viewX: {
+        keys: ['<pad1-axis3>'],
+        group: 'axisViewH'
     }
 });
 
