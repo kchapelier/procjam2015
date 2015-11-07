@@ -17,7 +17,7 @@ var THREE = require('three'),
 
 var init = function init () {
     var element = document.getElementById('game'),
-        r = rng.create('test');
+        r = rng.create('anothertest');
 
     element.addEventListener('click', function () {
         fullscreen.requestFullscreen(element);
@@ -27,10 +27,12 @@ var init = function init () {
     renderer.infectDom(element);
     renderer.useCamera(camera);
 
+    /*
     // axis and center of the scene for reference
     renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(3000,10,10), new THREE.MeshNormalMaterial()));
     renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(10,3000,10), new THREE.MeshNormalMaterial()));
     renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(10,10,3000), new THREE.MeshNormalMaterial()));
+    */
 
     var width = 32,
         height = 128,
@@ -77,10 +79,20 @@ var init = function init () {
 
     var cube = new THREE.Mesh(
         geometry,
-        new THREE.MeshNormalMaterial()
+        new THREE.MeshPhongMaterial({
+            color: 0x111111,
+            specular: 0x694489,
+            shininess: 10,
+            metal: true
+        })
     );
 
     renderer.addToScene(cube);
+
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    directionalLight.position.set( 0.2, 1, 0.3 );
+
+    renderer.addToScene(directionalLight);
 
     var loop = new GameLoop();
 

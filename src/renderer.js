@@ -8,7 +8,7 @@ var THREE = require('three'),
 
 var renderer = new THREE.WebGLRenderer({ antialias: true, maxLights: 4 }),
     scene = new THREE.Scene(),
-    backgroundColor = 0xD0C019;
+    backgroundColor = 0x694489;
 
 renderer.setPixelRatio(pixelRatio);
 renderer.setSize(baseWidth, baseHeight);
