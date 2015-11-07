@@ -1,0 +1,29 @@
+{
+  "name": "procjam2015",
+  "version": "0.0.0",
+  "privare": true,
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "browserify src/index.js -d --s main -u crypto > build/main.js",
+    "watch": "watchify src/index.js --s main -u crypto -o build/main.js -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kchapelier/procjam2015.git"
+  },
+  "author": "Kevin Chapelier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kchapelier/procjam2015/issues"
+  },
+  "homepage": "https://github.com/kchapelier/procjam2015",
+  "dependencies": {
+    "voxel": "git+https://github.com/kchapelier/voxel.git",
+    "three": "^0.73.0",
+    "migl-input": "^2.0.1",
+    "migl-gameloop": "^1.2.1",
+    "cellular-automata": "^0.1.0",
+    "migl-rng": "^1.0.0"
+  }
+}
