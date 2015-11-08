@@ -1,6 +1,6 @@
 var THREE = require('three');
 
-var convertToGeometry = function convertToGeometry (data, widthBlocks, heightBlocks, depthBlocks) {
+var convertToGeometry = function convertToGeometry (data, widthBlocks, heightBlocks, depthBlocks, normalPerturb, random) {
     var geometry = new THREE.Geometry(),
         mesh = data.mesh,
         shape = data.shape,
@@ -29,15 +29,21 @@ var convertToGeometry = function convertToGeometry (data, widthBlocks, heightBlo
         ));
     }
 
-    //geometry.verticesNeedUpdate = true;
-    //geometry.elementsNeedUpdate = true;
-    //geometry.normalsNeedUpdate = true;
-
+    geometry.mergeVertices();
     geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
 
-    //geometry.computeBoundingBox();
-    //geometry.computeBoundingSphere();
+    if (normalPerturb !== 0) {
+        for (i = 0; i < geometry.faces.length; i++) {
+            geometry.faces[i].normal.x += (random() - 0.5) * normalPerturb;
+            geometry.faces[i].normal.y += (random() - 0.5) * normalPerturb;
+            geometry.faces[i].normal.z += (random() - 0.5) * normalPerturb;
+        }
+
+        geometry.normalsNeedUpdate = true;
+    }
+
+    geometry.computeBoundingBox();
+    geometry.computeBoundingSphere();
 
     return geometry;
 };

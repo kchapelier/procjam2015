@@ -2,6 +2,7 @@
 
 var THREE = require('three'),
     GameLoop = require('migl-gameloop'),
+    rng = require('migl-rng'),
     renderer = require('./renderer'),
     Camera = require('./camera'),
     camera = new Camera(75, renderer.screenWidth / renderer.screenHeight),
@@ -28,6 +29,7 @@ var init = function init () {
         color: 0x202020,
         specular: 0xE0E0E0,
         shininess: 11,
+        shading: THREE.SmoothShading,
         metal: true
     });
 
@@ -47,18 +49,19 @@ var init = function init () {
 
     var width = 32,
         height = 128,
-        depth = 32;
+        depth = 32,
+        seed = 'procjam';
 
 
-    generateGeometryData('test 2', width, height, depth, function (error, data) {
-        var geometry = converToGeometry(data, 100, 100, 100);
+    generateGeometryData(seed, width, height, depth, function (error, data) {
+        var geometry = converToGeometry(data, 100, 100, 100, 0.1, rng.create(seed).random);
 
         var cube = new THREE.Mesh(
             geometry,
             material
         );
 
-        cube.position.set(width * 100, height * 90, depth * 100);
+        //cube.position.set(width * 100, height * 90, depth * 100);
 
         renderer.addToScene(cube);
     });

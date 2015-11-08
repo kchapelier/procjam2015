@@ -35,6 +35,7 @@ var generateGeometryData = function generateGeometryData (seed, width, height, d
         );
     }
 
+
     cell.setOutOfBoundValue(1)
         .apply('E 0..4,6/1,6 von-neumann', 7)
         .setOutOfBoundValue('wrap')
