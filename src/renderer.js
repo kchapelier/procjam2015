@@ -15,7 +15,9 @@ renderer.setSize(baseWidth, baseHeight);
 renderer.autoClear = false;
 renderer.setClearColor(backgroundColor, 1);
 
-scene.fog = new THREE.FogExp2(backgroundColor, 0.00045);
+// 0.00044 to 0.00020
+
+scene.fog = new THREE.FogExp2(backgroundColor, 0.00044);
 
 window.addEventListener('resize', function () {
     module.exports.resize(window.innerWidth, window.innerHeight);
@@ -25,9 +27,11 @@ module.exports = {
     screenWidth: baseWidth,
     screenHeight: baseHeight,
     camera: null,
+    scene: scene,
+    renderer: renderer,
     useCamera: function (camera) {
         this.camera = camera;
-        scene.add(camera);
+        this.scene.add(camera);
     },
     resize: function (width, height) {
         this.screenHeight = height;
@@ -45,22 +49,22 @@ module.exports = {
     },
     addMultipleToScene: function (objects) {
         for(var i = 0; i < objects.length; i++) {
-            scene.add(objects[i]);
+            this.scene.add(objects[i]);
         }
     },
     addToScene: function (object) {
         if (isArray(object)) {
             this.addMultipleToScene(object);
         } else {
-            scene.add(object);
+            this.scene.add(object);
         }
     },
     removeFromScene: function (object) {
-        scene.remove(object);
+        this.scene.remove(object);
     },
     render: function () {
         //controls.update();
         renderer.clear();
-        renderer.render( scene, this.camera );
+        renderer.render( this.scene, this.camera );
     }
 };
