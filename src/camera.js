@@ -3,7 +3,7 @@
 var THREE = require('three');
 
 var Camera = function Camera (p1, p2) {
-    THREE.PerspectiveCamera.call(this, p1, p2, 2, 50000);
+    THREE.PerspectiveCamera.call(this, p1, p2, 1, 50000);
 
     this.position.set(50, 50, 50);
 

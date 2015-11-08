@@ -5,14 +5,15 @@ var THREE = require('three'),
     rng = require('migl-rng'),
     renderer = require('./renderer'),
     Camera = require('./camera'),
-    camera = new Camera(75, renderer.screenWidth / renderer.screenHeight),
+    camera = new Camera(70, renderer.screenWidth / renderer.screenHeight),
     pointer = require('./pointer'),
     input = require('./input'),
     fullscreen = require('./fullscreen'),
     generateGeometryData = require('./utils/generate-geometry-data'),
     converToGeometry = require('./utils/convert-to-geometry'),
     DayNightCycle = require('./utils/day-night-cycle'),
-    Player = require('./entities/player');
+    Player = require('./entities/player'),
+    physics = require('./physics');
 
 var init = function init () {
     var element = document.getElementById('game');
@@ -24,6 +25,8 @@ var init = function init () {
 
     renderer.infectDom(element);
     renderer.useCamera(camera);
+
+    var gravity = new THREE.Vector3(0, -1, 0);
 
     var material = new THREE.MeshPhongMaterial({
         color: 0x202020,
@@ -44,14 +47,22 @@ var init = function init () {
     var sun = new THREE.Mesh(new THREE.SphereGeometry(40000,50,50), new THREE.MeshNormalMaterial())
     renderer.addToScene(sun);
 
+    var collisionObjects = [];
 
-    renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(100000,1,100000), material));
+    var checkCollision = function checkCollision (entity) {
+        physics.applyConstraints(entity, collisionObjects);
+    };
+
+    var ground = new THREE.Mesh(new THREE.BoxGeometry(100000,1,100000), material);
+
+    collisionObjects.push(ground);
+
+    renderer.addToScene(ground);
 
     var width = 32,
         height = 128,
         depth = 32,
         seed = 'procjam';
-
 
     generateGeometryData(seed, width, height, depth, function (error, data) {
         var geometry = converToGeometry(data, 100, 100, 100, 0.1, rng.create(seed).random);
@@ -61,10 +72,13 @@ var init = function init () {
             material
         );
 
-        //cube.position.set(width * 100, height * 90, depth * 100);
+        cube.position.set(0, height * 43, 0);
 
         renderer.addToScene(cube);
+        collisionObjects.push(cube);
     });
+
+
 
 
     var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
@@ -80,9 +94,13 @@ var init = function init () {
         player = new Player(camera, input, pointer),
         dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun);
 
+    player.position.y = 1000;
+    player.position.x = 1000;
+    player.position.z = 1000;
+
     loop.update = function(dt) {
         input.update(dt);
-        player.update(dt);
+        player.update(dt, gravity, checkCollision);
         camera.update(dt);
     };
 
