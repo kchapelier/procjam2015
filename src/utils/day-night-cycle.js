@@ -37,15 +37,16 @@ var wshaper = function wshaper (value, shape) {
     return value;
 };
 
-console.log('here');
-
 DayNightCycle.prototype.update = function (dt) {
     this.time = this.time + dt / 100;
 
-    var rampTime = (this.time % 2000 / 2000),
+    var rampTime = (this.time % 500 / 500),
         ratioFog = Math.abs(Math.pow(Math.sin(rampTime * Math.PI), 1)),
         positionSunX = Math.sin((rampTime + 0) * Math.PI * 2),
         positionSunY = Math.cos((rampTime + 0) * Math.PI * 2);
+
+    //var gameTime = (rampTime + 0.5) * 24 % 24 * 60 | 0;
+    //console.log(gameTime / 60 | 0, ':', gameTime % 60);
 
     this.fog.density = lerp(minFog, maxFog, ratioFog);
     this.fog.color.setRGB(

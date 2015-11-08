@@ -62,10 +62,10 @@ var init = function init () {
     var width = 32,
         height = 128,
         depth = 32,
-        seed = 'procjam';
+        seed = '#procjam2';
 
     generateGeometryData(seed, width, height, depth, function (error, data) {
-        var geometry = converToGeometry(data, 100, 100, 100, 0.1, rng.create(seed).random);
+        var geometry = converToGeometry(data, 100, 100, 100, 0.08, rng.create(seed).random);
 
         var cube = new THREE.Mesh(
             geometry,
@@ -81,7 +81,7 @@ var init = function init () {
 
 
 
-    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55 );
     directionalLight.position.set( 0.2, 1, 0.3 );
 
     var hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x111111, 1.5);
@@ -95,8 +95,8 @@ var init = function init () {
         dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun);
 
     player.position.y = 1000;
-    player.position.x = 1000;
-    player.position.z = 1000;
+    player.position.x = 2000;
+    player.position.z = 2000;
 
     loop.update = function(dt) {
         input.update(dt);
