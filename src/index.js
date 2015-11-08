@@ -11,7 +11,8 @@ var THREE = require('three'),
     fullscreen = require('./fullscreen'),
     converToGeometry = require('./utils/convert-to-geometry'),
     Poisson = require('poisson-disk-sampling'),
-    CellularAutomata = require('cellular-automata');
+    CellularAutomata = require('cellular-automata'),
+    Player = require('./entities/player');
 
 
 
@@ -56,7 +57,6 @@ var init = function init () {
         );
     }
 
-
     cell.setOutOfBoundValue(1)
         .apply('E 0..4,6/1,6 von-neumann', 7)
         .setOutOfBoundValue('wrap')
@@ -73,7 +73,6 @@ var init = function init () {
     cell.setOutOfBoundValue(0);
     cell.setRule('E 3..6/5..6 axis 1');
     cell.iterate(10);
-
 
     var geometry = converToGeometry(cell.currentArray, 100, 100, 100);
 
@@ -96,51 +95,11 @@ var init = function init () {
 
     var loop = new GameLoop();
 
-    var leftCommand = input.commands.left,
-        rightCommand = input.commands.right,
-        upCommand = input.commands.up,
-        downCommand = input.commands.down,
-        viewZCommand = input.commands.viewZ,
-        viewXCommand = input.commands.viewX,
-        viewYMinusCommand = input.commands.viewYPlus,
-        viewYPlusCommand = input.commands.viewYMinus;
-
-    var movement = new THREE.Vector3(0, 0, 0);
-    var axisUp = new THREE.Vector3(0, 1, 0);
+    var player = new Player(camera, input, pointer);
 
     loop.update = function(dt) {
         input.update(dt);
-
-        camera.setMousePosition(pointer.movementX + Math.sin(viewXCommand.value) * Math.pow(viewXCommand.value, 2) * 25, pointer.movementY + Math.sin(viewZCommand.value) * Math.pow(viewZCommand.value, 2) * 25, dt);
-
-        if (leftCommand.active) {
-            movement.x = leftCommand.value;
-        } else {
-            movement.x = -rightCommand.value;
-        }
-
-        if (upCommand.active) {
-            movement.z = upCommand.value;
-        } else {
-            movement.z = -downCommand.value;
-        }
-
-        if (movement.x || movement.z) {
-            // TODO the theta and phi should be calculated on the player entity
-            movement.normalize();
-            movement.applyAxisAngle(axisUp, -camera.theta + Math.PI / 2);
-        }
-
-        if (viewYPlusCommand.active) {
-            movement.y = viewYPlusCommand.value;
-        } else {
-            movement.y = -viewYMinusCommand.value;
-        }
-
-
-        camera.position.z += movement.z * dt;
-        camera.position.x += movement.x * dt;
-        camera.position.y += movement.y * dt;
+        player.update(dt);
         camera.update(dt);
     };
 
