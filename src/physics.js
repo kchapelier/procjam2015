@@ -86,19 +86,21 @@ physics.constraintY = function (entity, meshCollisions) {
     }
 
     if (minIntersect !== null) {
+        if (yDirection < 0) {
+            entity.jumpCount = 0;
+            entity.currentJumpStrength = 0;
+        }
+
         entity.position.y = minIntersect.point.y - height / 2 * yDirection;
 
         if (yDirection == Math.sign(entity.movement.y)) {
             entity.movement.y = 0;
+            entity.currentJumpStrength = 0;
         }
+    } else if (yDirection < 0 && entity.entity === 0) {
+        //falling from a platform, set currentJump to avoid double jump
+        entity.jumpCount = 1;
     }
-
-    /*
-    else if (yDirection < 0 && entity.currentJump === 0) {
-        //falling from a platform, set currentJump to avoid triple jump
-        entity.currentJump = 1;
-    }
-    */
 };
 
 module.exports = physics;

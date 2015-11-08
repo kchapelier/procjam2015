@@ -7,10 +7,14 @@ var THREE = require('three'),
 var Player = function Player (camera, input, pointer) {
     this.height = 100;
     this.width = 100;
+    this.jumpCount = 0;
+    this.jumpStrength = 5;
+    this.currentJumpStrength = 0;
 
     this.position = new THREE.Vector3(0, 0, 0);
     this.movement = new THREE.Vector3(0, 0, 0);
 
+    this.actionCommand = input.commands.action;
     this.leftCommand = input.commands.left;
     this.rightCommand = input.commands.right;
     this.upCommand = input.commands.up;
@@ -41,6 +45,18 @@ Player.prototype.update = function (dt, gravity, checkCollision) {
         this.movement.y = this.viewYPlusCommand.value * 3;
     } else {
         this.movement.y = -this.viewYMinusCommand.value * 3;
+    }
+
+    if (this.actionCommand.down && this.jumpCount === 0) {
+        this.currentJumpStrength = this.jumpStrength;
+        this.jumpCount++;
+    }
+
+    if (this.currentJumpStrength > 0.001) {
+        this.movement.y += this.currentJumpStrength;
+        this.currentJumpStrength *= 0.9;
+    } else {
+        this.currentJumpStrength = 0;
     }
 
     this.movement.add(gravity);
