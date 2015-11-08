@@ -26,7 +26,7 @@ var init = function init () {
     renderer.infectDom(element);
     renderer.useCamera(camera);
 
-    var gravity = new THREE.Vector3(0, -1, 0);
+    var gravity = new THREE.Vector3(0, -1.2, 0);
 
     var material = new THREE.MeshPhongMaterial({
         color: 0x202020,
@@ -44,7 +44,7 @@ var init = function init () {
 
      */
 
-    var sun = new THREE.Mesh(new THREE.SphereGeometry(40000,50,50), new THREE.MeshNormalMaterial())
+    var sun = new THREE.Mesh(new THREE.SphereGeometry(40000,50,50), new THREE.MeshBasicMaterial({ color: 0xF5F5D0, fog: false }));
     renderer.addToScene(sun);
 
     var collisionObjects = [];
@@ -62,7 +62,7 @@ var init = function init () {
     var width = 32,
         height = 128,
         depth = 32,
-        seed = '#procjam2';
+        seed = '#procjam';
 
     generateGeometryData(seed, width, height, depth, function (error, data) {
         var geometry = converToGeometry(data, 100, 100, 100, 0.08, rng.create(seed).random);
