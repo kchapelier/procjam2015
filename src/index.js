@@ -89,7 +89,6 @@ var init = function init () {
 
     var hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x111111, 1.5);
 
-
     renderer.addToScene(hemisphereLight);
     renderer.addToScene(directionalLight);
 
