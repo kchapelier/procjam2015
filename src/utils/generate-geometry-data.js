@@ -54,7 +54,6 @@ var generateType2 = function (shape, rng) {
         );
     }
 
-
     cell.setOutOfBoundValue(1)
         .apply('E 6..26/1..9', innerType[0]) // 2 or 5
         .setOutOfBoundValue('wrap')
@@ -122,7 +121,37 @@ var generateType4 = function generateType4 (shape, rng) {
         .apply('E 0..2/1,3 corner 1', 1)
         .apply('E 9..24/16,26 moore', 4)
         .apply('E 26/0,23,26 moore', 8)
-        .apply('E 2..6/6 von-neumann', 2)
+        .apply('E 2..6/6 von-neumann', 2);
+
+    return cell.currentArray;
+};
+
+var generateType5 = function generateType5 (shape, rng) {
+    var random = rng.random,
+        cell = new CellularAutomata(shape, 0),
+        sampling = new Poisson(shape, 27, 30, 40, random);
+
+    sampling.fill();
+
+    for (var i = 0; i < sampling.samplePoints.length; i++) {
+        cell.currentArray.set(
+            sampling.samplePoints[i][0] | 0,
+            sampling.samplePoints[i][1] | 0,
+            sampling.samplePoints[i][2] | 0,
+            1
+        );
+    }
+
+    cell.setOutOfBoundValue(1)
+        .apply('E /1,9 moore', 1)
+        .apply('E 3,6,12/1,9,14 moore', 4)
+        .apply('E 1..6/6 von-neumann', 1)
+        .apply('E 26/0 moore', 4)
+        .apply('E 20..26/12,15,20..26 moore', 2)
+        .setOutOfBoundValue(0)
+        .apply('E 1..6/4..6 von-neumann', 1)
+        .setOutOfBoundValue(1)
+        .apply('E 0..26/13..14 moore', 4);
 
     return cell.currentArray;
 };
@@ -131,7 +160,7 @@ var generateGeometryData = function generateGeometryData (seed, width, height, d
     var random = rng.create(seed),
         shape = [width,height,depth];
 
-    var ndarray = generateType4(shape, random);
+    var ndarray = generateType5(shape, random);
 
     /*
     cell.setOutOfBoundValue(1);
