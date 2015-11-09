@@ -16,6 +16,10 @@ var THREE = require('three'),
     physics = require('./physics');
 
 var init = function init () {
+    var seed = window.location.hash.replace(/#/g, '') || 'ProcJam';
+
+    console.log('seed', seed);
+
     var element = document.getElementById('game');
 
     element.addEventListener('click', function () {
@@ -61,8 +65,7 @@ var init = function init () {
 
     var width = 32,
         height = 128,
-        depth = 32,
-        seed = 'PROCJAM';
+        depth = 32;
 
     generateGeometryData(seed, width, height, depth, function (error, data) {
         var geometry = converToGeometry(data, 100, 100, 100, 0.08, rng.create(seed).random);
