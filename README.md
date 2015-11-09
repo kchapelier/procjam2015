@@ -10,7 +10,8 @@
 
 ## TODO for Monday 2015-11-09
 
-- [ ] Make the day cycle affects the color of the sun.
+- [ ] Retrieve the seed from the url.
+- [X] Make the day cycle affects the color of the sun.
 - [ ] Make the sun a giant shader sprite always facing the user ?
 - [ ] FOCUS on trying to get a better style of generation for the tower, possibly multiple generation styles.
 

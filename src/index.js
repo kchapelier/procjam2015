@@ -44,7 +44,7 @@ var init = function init () {
 
      */
 
-    var sun = new THREE.Mesh(new THREE.SphereGeometry(40000,50,50), new THREE.MeshBasicMaterial({ color: 0xF5F5D0, fog: false }));
+    var sun = new THREE.Mesh(new THREE.SphereGeometry(40000,60,70), new THREE.MeshBasicMaterial({ color: 0xF5F5D0, fog: false }));
     renderer.addToScene(sun);
 
     var collisionObjects = [];
@@ -62,7 +62,7 @@ var init = function init () {
     var width = 32,
         height = 128,
         depth = 32,
-        seed = '#procjam';
+        seed = 'PROCJAM';
 
     generateGeometryData(seed, width, height, depth, function (error, data) {
         var geometry = converToGeometry(data, 100, 100, 100, 0.08, rng.create(seed).random);
