@@ -67,11 +67,71 @@ var generateType2 = function (shape, rng) {
     return cell.currentArray;
 };
 
+var generateType3 = function generateType3 (shape, rng) {
+    var random = rng.random,
+        cell = new CellularAutomata(shape, 0),
+        sampling = new Poisson(shape, 13, 18, 10, random);
+
+    cell.fillWithDistribution([[0, 1999], [1, 1]], random); // a little bit of random
+
+    sampling.fill();
+
+    for (var i = 0; i < sampling.samplePoints.length; i++) {
+        cell.currentArray.set(
+            sampling.samplePoints[i][0] | 0,
+            sampling.samplePoints[i][1] | 0,
+            sampling.samplePoints[i][2] | 0,
+            1
+        );
+    }
+
+    cell.setOutOfBoundValue(1)
+        .apply('E 0..4,6/1,6 von-neumann', 7)
+        .setOutOfBoundValue('wrap')
+        .apply('E 0..26/8 moore', 30)
+        .setOutOfBoundValue('wrap')
+        .apply('E 3..6/5..6 von-neumann', 3)
+        .apply('E 26/B0,24..26 moore', 3)
+        .setOutOfBoundValue(0)
+        .apply('E 7..26/8..18 axis 3', 4)
+        .apply('E 3..6/5..6 axis 1', 10);
+
+    return cell.currentArray;
+};
+
+
+var generateType4 = function generateType4 (shape, rng) {
+    var random = rng.random,
+        cell = new CellularAutomata(shape, 0),
+        sampling = new Poisson(shape, 25, 38, 30, random);
+
+    sampling.fill();
+
+    for (var i = 0; i < sampling.samplePoints.length; i++) {
+        cell.currentArray.set(
+            sampling.samplePoints[i][0] | 0,
+            sampling.samplePoints[i][1] | 0,
+            sampling.samplePoints[i][2] | 0,
+            1
+        );
+    }
+
+    cell.setOutOfBoundValue(1)
+        .apply('E 0..2/1,3 corner 3', 7)
+        .apply('E 0..2/1,3 corner 2', 5)
+        .apply('E 0..2/1,3 corner 1', 1)
+        .apply('E 9..24/16,26 moore', 4)
+        .apply('E 26/0,23,26 moore', 8)
+        .apply('E 2..6/6 von-neumann', 2)
+
+    return cell.currentArray;
+};
+
 var generateGeometryData = function generateGeometryData (seed, width, height, depth, callback) {
     var random = rng.create(seed),
         shape = [width,height,depth];
 
-    var ndarray = generateType2(shape, random);
+    var ndarray = generateType4(shape, random);
 
     /*
     cell.setOutOfBoundValue(1);
@@ -88,44 +148,6 @@ var generateGeometryData = function generateGeometryData (seed, width, height, d
     cell.setOutOfBoundValue(0);
     cell.setRule('ES3..26/B26');
     cell.iterate(3);
-    */
-
-    /*
-
-    var random = rng.create(seed).random,
-        cell = new CellularAutomata([width,height,depth], 0),
-        sampling = new Poisson([width,height,depth], 13, 18, 10, random);
-
-    cell.fillWithDistribution([[0, 1999], [1, 1]], random); // a little bit of random
-
-    sampling.fill();
-
-    for (var i = 0; i < sampling.samplePoints.length; i++) {
-        cell.currentArray.set(
-            sampling.samplePoints[i][0] | 0,
-            sampling.samplePoints[i][1] | 0,
-            sampling.samplePoints[i][2] | 0,
-            1
-        );
-    }
-
-
-    cell.setOutOfBoundValue(1)
-        .apply('E 0..4,6/1,6 von-neumann', 7)
-        .setOutOfBoundValue('wrap')
-        .apply('E 0..26/8 moore', 30)
-        .setOutOfBoundValue('wrap')
-        .apply('E 3..6/5..6 von-neumann', 3);
-
-    cell.setRule('ES26/B0,24..26');
-    cell.iterate(3);
-
-    cell.setOutOfBoundValue(0);
-    cell.setRule('E 7..26/8..18 axis 3');
-    cell.iterate(4);
-    cell.setOutOfBoundValue(0);
-    cell.setRule('E 3..6/5..6 axis 1');
-    cell.iterate(10);
     */
 
     callback(null, {

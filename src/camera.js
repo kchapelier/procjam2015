@@ -26,7 +26,7 @@ Camera.prototype.theta = null;
 
 Camera.prototype.setMousePosition = function (deltaX, deltaY, dt) {
     this.lon = this.lon + deltaX * dt / 200;
-    this.lat = Math.max(-89, Math.min(89, this.lat - deltaY * dt / 200));
+    this.lat = Math.max(-80, Math.min(80, this.lat - deltaY * dt / 180));
 };
 
 Camera.prototype.update = function (dt) {
