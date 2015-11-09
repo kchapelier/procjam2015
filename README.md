@@ -18,5 +18,6 @@
 ## TODO for .. later ?
 
 - [ ] Post processing ?
+- [ ] Add some shiny dust particles during the day
 - [ ] Convert the generation code into a web worker.
 - [ ] Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)

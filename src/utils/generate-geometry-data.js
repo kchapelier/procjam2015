@@ -17,7 +17,81 @@ var getMeshFromVoxel = function getMeshFromVoxel (ndarray) {
     return voxel.meshers.monotone(voxelData.data, [voxelData.shape[2], voxelData.shape[1], voxelData.shape[0]]);
 };
 
+var generateType1 = function (shape, rng) {
+    var random = rng.random,
+        cell = new CellularAutomata(shape, 0);
+
+    cell.fillWithDistribution([[0,6], [1,94]], random);
+
+    cell.setOutOfBoundValue(1)
+        .apply('E 6..26/1..9 moore', 5)
+        .apply('E 2,4,6/0 von-neumann', 1)
+        .apply('E 26/0,24..26 moore', 4)
+        .setOutOfBoundValue(0)
+        .apply('E 3..26/26 moore', 1)
+        .apply('E 12..26/26 moore', 7);
+
+    return cell.currentArray;
+};
+
+var generateType2 = function (shape, rng) {
+    var random = rng.random,
+        cell = new CellularAutomata(shape, 0),
+        sampling = new Poisson(shape, 20, 30, 30, random),
+        innerTypes = [[2,1], [5,3], [2,3]],
+        i;
+
+    var innerType = innerTypes[(random() * innerTypes.length) | 0];
+
+    sampling.fill();
+
+    for (i = 0; i < sampling.samplePoints.length; i++) {
+        cell.currentArray.set(
+            sampling.samplePoints[i][0] | 0,
+            sampling.samplePoints[i][1] | 0,
+            sampling.samplePoints[i][2] | 0,
+            1
+        );
+    }
+
+
+    cell.setOutOfBoundValue(1)
+        .apply('E 6..26/1..9', innerType[0]) // 2 or 5
+        .setOutOfBoundValue('wrap')
+        .apply('E 2,4,6/0 von-neumann', innerType[1]) // 1 or 3
+        .apply('ES26/B0,24..26', 8)
+        .setOutOfBoundValue(0)
+        .apply('ES3..26/B26', 1)
+        .apply('ES12..26/B26', 6);
+
+    return cell.currentArray;
+};
+
 var generateGeometryData = function generateGeometryData (seed, width, height, depth, callback) {
+    var random = rng.create(seed),
+        shape = [width,height,depth];
+
+    var ndarray = generateType2(shape, random);
+
+    /*
+    cell.setOutOfBoundValue(1);
+    cell.setRule('E 6..26/1..9');
+    cell.iterate(3);
+
+    cell.setOutOfBoundValue('wrap');
+    cell.setRule('E 2,4,6/0 von-neumann');
+    cell.iterate(2);
+
+    cell.setRule('ES26/B0,24..26');
+    cell.iterate(8);
+
+    cell.setOutOfBoundValue(0);
+    cell.setRule('ES3..26/B26');
+    cell.iterate(3);
+    */
+
+    /*
+
     var random = rng.create(seed).random,
         cell = new CellularAutomata([width,height,depth], 0),
         sampling = new Poisson([width,height,depth], 13, 18, 10, random);
@@ -52,10 +126,11 @@ var generateGeometryData = function generateGeometryData (seed, width, height, d
     cell.setOutOfBoundValue(0);
     cell.setRule('E 3..6/5..6 axis 1');
     cell.iterate(10);
+    */
 
     callback(null, {
-        mesh: getMeshFromVoxel(cell.currentArray),
-        shape: cell.shape
+        mesh: getMeshFromVoxel(ndarray),
+        shape: shape
     });
 };
 

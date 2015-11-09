@@ -1,5 +1,18 @@
 "use strict";
 
+/*
+Things to read
+
+ https://www.opengl.org/discussion_boards/showthread.php/167751-day-night-cycle-light
+ http://forum.celestialmatters.org/viewtopic.php?f=9&t=116&sid=37befac93f977998de203896f51e4789
+ https://www.google.be/search?q=Preetham+sky+model&oq=Preetham+sky+model&aqs=chrome..69i57j0l2.544j0j7&sourceid=chrome&es_sm=91&ie=UTF-8
+ https://github.com/bblodfon/skylighting-Web-app
+ https://www.youtube.com/watch?v=jMdCC4uRZkg
+ http://twiik.net/articles/simplest-possible-day-night-cycle-in-unity-5
+ https://wiki.unrealengine.com/Tutorial:_Time_of_Day
+
+ */
+
 var maxFog = 0.00045,
     minFog = 0.00016;
 
@@ -44,7 +57,9 @@ var wshaper = function wshaper (value, shape) {
 DayNightCycle.prototype.update = function (dt) {
     this.time = this.time + dt / 100;
 
-    var rampTime = (1500 + this.time) % 2000 / 2000,
+    var duration = 300;
+
+    var rampTime = (duration * 0.75 + this.time) % duration / duration,
         ratioFog = Math.abs(Math.pow(Math.sin(rampTime * Math.PI), 1)),
         positionSunX = Math.sin((rampTime + 0) * Math.PI * 2),
         positionSunY = Math.cos((rampTime + 0) * Math.PI * 2),

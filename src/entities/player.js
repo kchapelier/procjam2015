@@ -42,9 +42,9 @@ Player.prototype.update = function (dt, gravity, checkCollision) {
 
     // TODO refactor in a jump action
     if (this.viewYPlusCommand.active) {
-        this.movement.y = this.viewYPlusCommand.value * 3;
+        this.movement.y = this.viewYPlusCommand.value * 2.5;
     } else {
-        this.movement.y = -this.viewYMinusCommand.value * 3;
+        this.movement.y = -this.viewYMinusCommand.value * 2;
     }
 
     if (this.actionCommand.down && this.jumpCount === 0) {

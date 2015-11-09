@@ -16,7 +16,7 @@ var THREE = require('three'),
     physics = require('./physics');
 
 var init = function init () {
-    var seed = window.location.hash.replace(/#/g, '') || 'ProcJam';
+    var seed = window.location.hash.replace(/#/g, '') || (new Date()).toISOString();
 
     console.log('seed', seed);
 
@@ -98,8 +98,7 @@ var init = function init () {
         dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun);
 
     player.position.y = 1000;
-    player.position.x = 2000;
-    player.position.z = 2000;
+    player.position.x = -3000;
 
     loop.update = function(dt) {
         input.update(dt);
