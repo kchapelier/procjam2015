@@ -15,6 +15,22 @@ var THREE = require('three'),
     physics = require('./physics'),
     generator = require('./generator');
 
+var shaders = require('./shaders/shaders.json');
+
+var uniforms = {
+    color:     { type: "c", value: new THREE.Color( 0xffffff ) },
+    time:     { type: "f", value: 1. }
+};
+
+var shaderMaterial = new THREE.ShaderMaterial({
+    uniforms:       uniforms,
+    vertexShader:   shaders['dust.v.glsl'],
+    fragmentShader: shaders['dust.f.glsl'],
+    blending:       THREE.AdditiveBlending,
+    depthTest:      true,
+    transparent:    true
+});
+
 var init = function init () {
     var seed = window.location.hash.replace(/#/g, '') || (new Date()).toISOString();
 
@@ -47,6 +63,50 @@ var init = function init () {
     renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(10,10,3000), new THREE.MeshNormalMaterial()));
 
      */
+
+
+
+
+    var radius = 1500,
+        particles = 300;
+
+    var geometry = new THREE.BufferGeometry();
+
+    var positions = new Float32Array( particles * 3 );
+    var colors = new Float32Array( particles * 3 );
+    var offsets = new Float32Array( particles );
+
+    for ( var i = 0, i3 = 0; i < particles; i ++, i3 += 3 ) {
+
+        positions[ i3 ] = ( Math.random() * 2 - 1 ) * radius;
+        positions[ i3 + 1 ] = ( Math.pow(Math.random(), 2.5) * 2 - 1 ) * radius;
+        positions[ i3 + 2 ] = ( Math.random() * 2 - 1 ) * radius;
+
+        colors[ i3 ] = 0.9;
+        colors[ i3 + 1 ] = 0.9;
+        colors[ i3 + 2 ] = 0.7;
+
+        offsets[ i ] = Math.random() * 100 * Math.PI;
+
+    }
+
+    geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+    geometry.addAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
+    geometry.addAttribute( 'toffset', new THREE.BufferAttribute( offsets, 1 ) );
+
+    console.log(geometry.getAttribute('toffset'));
+
+    var particleSystem = new THREE.Points( geometry, shaderMaterial );
+
+    particleSystem.position.y = 1500;
+
+    renderer.addToScene( particleSystem );
+
+
+
+
+
+
 
     var sun = new Sun();
     renderer.addToScene(sun.mesh);
@@ -83,12 +143,14 @@ var init = function init () {
 
     var loop = new GameLoop(),
         player = new Player(camera, input, pointer),
-        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh);
+        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh, shaderMaterial);
 
     player.position.y = 1000;
     player.position.x = -3000;
 
     loop.update = function(dt) {
+        shaderMaterial.uniforms.time.value += dt;
+
         input.update(dt);
         player.update(dt, gravity, checkCollision);
         camera.update(dt);

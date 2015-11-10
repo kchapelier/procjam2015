@@ -19,13 +19,17 @@
 
 ## TODO for Tuesday 2015-11-10
 
-- [ ] Add some shiny dust particles during the day, or at least see how it goes.
-- [ ] Convert the generation code into a web worker.
+- [X] Add some shiny dust particles during the day, or at least see how it goes.
+- [X] Convert the generation code into a web worker.
 - [ ] Work on some music / soundscape.
+
+## TODO for Wednesday 2015-11-11
+
+- [ ] Find something interesting to do with the ground, ease it into the tower ?
+- [ ] Post processing
 
 ## TODO for .. later ?
 
-- [ ] Post processing ?
 - [ ] A totally randomized generation
 - [ ] An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported.
 - [ ] Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)

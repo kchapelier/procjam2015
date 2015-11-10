@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "browserify src/index.js -d --s main -u crypto > build/main.js",
+    "build-shaders": "cd ./src/shaders/src/ && files2json \"./*.glsl\" > ./../shaders.json && cd ../../..",
     "build-worker": "browserify src/worker.js -d --s main -u crypto > build/worker.js",
     "watch": "watchify src/index.js --s main -u crypto -o build/main.js -v"
   },

@@ -24,12 +24,13 @@ var sunColorRed = [0xF5 / 255, 0xF5 / 255],
     sunColorGreen = [0xF5 / 255, 0xC0 / 255],
     sunColorBlue = [0xD0 / 255, 0x80 / 255];
 
-var DayNightCycle = function DayNightCycle (renderer, fog, directionalLight, hemisphereLight, sun) {
+var DayNightCycle = function DayNightCycle (renderer, fog, directionalLight, hemisphereLight, sun, shaderMaterial) {
     this.renderer = renderer;
     this.fog = fog;
     this.directionalLight = directionalLight;
     this.hemisphereLight = hemisphereLight;
     this.sun = sun;
+    this.shaderMaterial = shaderMaterial;
     this.time = 0;
 };
 
@@ -85,6 +86,8 @@ DayNightCycle.prototype.update = function (dt) {
     this.directionalLight.color.set(this.fog.color);
     this.directionalLight.position.set(positionSunX, positionSunY, 1);
     this.directionalLight.position.normalize();
+
+    this.shaderMaterial.uniforms.color.value.set(this.sun.material.color);
 
     this.sun.position.set(positionSunX * 50000, positionSunY * 50000, 50000);
     this.renderer.setClearColor(this.fog.color, 1);

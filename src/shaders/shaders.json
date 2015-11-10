@@ -1,0 +1,4 @@
+{
+    "dust.f.glsl": "uniform vec3 color;\nuniform float time;\n\nvarying float vOffset;\n\nvoid main() {\n\tgl_FragColor = vec4( color.r, color.g, color.b, clamp(pow(sin(vOffset + time / 700.), 2.) * 1.75, 0., 0.9));\n}\n",
+    "dust.v.glsl": "attribute float toffset;\n\nvarying float vOffset;\n\nvoid main() {\n\tvOffset = toffset;\n\n\tvec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );\n\tgl_PointSize = 9. * ( 300.0 / length( mvPosition.xyz ) );\n\tgl_PointSize = clamp(gl_PointSize, 0., 3.5);\n\tgl_Position = projectionMatrix * mvPosition;\n}\n"
+}
