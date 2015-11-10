@@ -13,11 +13,19 @@
 - [X] Retrieve the seed from the url.
 - [X] Make the day cycle affects the color of the sun.
 - [ ] Make the sun a giant shader sprite always facing the user ?
-- [ ] FOCUS on trying to get a better style of generation for the tower, possibly multiple generation styles.
+  - Too much struggle against fov and culling
+- [X] FOCUS on trying to get a better style of generation for the tower, possibly multiple generation styles.
+  - Got five generation styles, that's a good start.
+
+## TODO for Tuesday 2015-11-10
+
+- [ ] Add some shiny dust particles during the day, or at least see how it goes.
+- [ ] Convert the generation code into a web worker.
+- [ ] Work on some music / soundscape.
 
 ## TODO for .. later ?
 
 - [ ] Post processing ?
-- [ ] Add some shiny dust particles during the day
-- [ ] Convert the generation code into a web worker.
+- [ ] A totally randomized generation
+- [ ] An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported.
 - [ ] Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)

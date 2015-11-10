@@ -13,6 +13,7 @@ var THREE = require('three'),
     converToGeometry = require('./utils/convert-to-geometry'),
     DayNightCycle = require('./utils/day-night-cycle'),
     Player = require('./entities/player'),
+    Sun = require('./entities/sun'),
     physics = require('./physics');
 
 var init = function init () {
@@ -48,8 +49,8 @@ var init = function init () {
 
      */
 
-    var sun = new THREE.Mesh(new THREE.SphereGeometry(40000,60,70), new THREE.MeshBasicMaterial({ color: 0xF5F5D0, fog: false }));
-    renderer.addToScene(sun);
+    var sun = new Sun();
+    renderer.addToScene(sun.mesh);
 
     var collisionObjects = [];
 
@@ -94,7 +95,7 @@ var init = function init () {
 
     var loop = new GameLoop(),
         player = new Player(camera, input, pointer),
-        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun);
+        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh);
 
     player.position.y = 1000;
     player.position.x = -3000;
