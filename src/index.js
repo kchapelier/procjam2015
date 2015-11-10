@@ -2,19 +2,18 @@
 
 var THREE = require('three'),
     GameLoop = require('migl-gameloop'),
-    rng = require('migl-rng'),
     renderer = require('./renderer'),
     Camera = require('./camera'),
     camera = new Camera(70, renderer.screenWidth / renderer.screenHeight),
     pointer = require('./pointer'),
     input = require('./input'),
     fullscreen = require('./fullscreen'),
-    generateGeometryData = require('./utils/generate-geometry-data'),
-    converToGeometry = require('./utils/convert-to-geometry'),
+    generator = require('./generator'),
     DayNightCycle = require('./utils/day-night-cycle'),
     Player = require('./entities/player'),
     Sun = require('./entities/sun'),
-    physics = require('./physics');
+    physics = require('./physics'),
+    generator = require('./generator');
 
 var init = function init () {
     var seed = window.location.hash.replace(/#/g, '') || (new Date()).toISOString();
@@ -68,22 +67,11 @@ var init = function init () {
         height = 128,
         depth = 32;
 
-    generateGeometryData(seed, width, height, depth, function (error, data) {
-        var geometry = converToGeometry(data, 100, 100, 100, 0.08, rng.create(seed).random);
-
-        var cube = new THREE.Mesh(
-            geometry,
-            material
-        );
-
-        cube.position.set(0, height * 43, 0);
-
-        renderer.addToScene(cube);
-        collisionObjects.push(cube);
+    generator(seed, width, height, depth, function (error, mesh) {
+        mesh.position.set(0, height * 43, 0);
+        renderer.addToScene(mesh);
+        collisionObjects.push(mesh);
     });
-
-
-
 
     var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55 );
     directionalLight.position.set( 0.2, 1, 0.3 );
