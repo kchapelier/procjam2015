@@ -67,8 +67,8 @@ var init = function init () {
 
 
 
-    var radius = 1500,
-        particles = 300;
+    var radius = 2000,
+        particles = 1000;
 
     var geometry = new THREE.BufferGeometry();
 
@@ -98,7 +98,7 @@ var init = function init () {
 
     var particleSystem = new THREE.Points( geometry, shaderMaterial );
 
-    particleSystem.position.y = 1500;
+    particleSystem.position.y = 2000;
 
     renderer.addToScene( particleSystem );
 

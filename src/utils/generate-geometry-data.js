@@ -156,11 +156,14 @@ var generateType5 = function generateType5 (shape, rng) {
     return cell.currentArray;
 };
 
+var generationTypes = [generateType1, generateType2, generateType3, generateType4, generateType5];
+
 var generateGeometryData = function generateGeometryData (seed, width, height, depth, callback) {
     var random = rng.create(seed),
-        shape = [width,height,depth];
+        shape = [width,height,depth],
+        type = (random.random() * generationTypes.length) | 0;
 
-    var ndarray = generateType5(shape, random);
+    var ndarray = generationTypes[type](shape, random);
 
     /*
     cell.setOutOfBoundValue(1);
