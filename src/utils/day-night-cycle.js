@@ -58,7 +58,7 @@ var wshaper = function wshaper (value, shape) {
 DayNightCycle.prototype.update = function (dt) {
     this.time = this.time + dt / 100;
 
-    var duration = 300;
+    var duration = 2000;
 
     var rampTime = (duration * 0.75 + this.time) % duration / duration,
         ratioFog = Math.abs(Math.pow(Math.sin(rampTime * Math.PI), 1)),
