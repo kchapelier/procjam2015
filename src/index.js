@@ -8,33 +8,18 @@ var THREE = require('three'),
     pointer = require('./pointer'),
     input = require('./input'),
     fullscreen = require('./fullscreen'),
-    generator = require('./generator'),
+    Generator = require('./generator/generator'),
     DayNightCycle = require('./utils/day-night-cycle'),
     Player = require('./entities/player'),
     Sun = require('./entities/sun'),
-    physics = require('./physics'),
-    generator = require('./generator');
+    physics = require('./physics');
 
-var shaders = require('./shaders/shaders.json');
-
-var uniforms = {
-    color:     { type: "c", value: new THREE.Color( 0xffffff ) },
-    time:     { type: "f", value: 1. }
-};
-
-var shaderMaterial = new THREE.ShaderMaterial({
-    uniforms:       uniforms,
-    vertexShader:   shaders['dust.v.glsl'],
-    fragmentShader: shaders['dust.f.glsl'],
-    blending:       THREE.AdditiveBlending,
-    depthTest:      true,
-    transparent:    true
-});
+var materials = require('./materials/materials');
 
 var init = function init () {
     var seed = window.location.hash.replace(/#/g, '') || (new Date()).toISOString();
 
-    console.log('seed', seed);
+
 
     var element = document.getElementById('game');
 
@@ -65,8 +50,7 @@ var init = function init () {
      */
 
 
-
-
+    /*
     var radius = 2000,
         particles = 1000;
 
@@ -94,14 +78,12 @@ var init = function init () {
     geometry.addAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
     geometry.addAttribute( 'toffset', new THREE.BufferAttribute( offsets, 1 ) );
 
-    console.log(geometry.getAttribute('toffset'));
-
-    var particleSystem = new THREE.Points( geometry, shaderMaterial );
+    var particleSystem = new THREE.Points( geometry, materials.dust );
 
     particleSystem.position.y = 2000;
 
     renderer.addToScene( particleSystem );
-
+    /**/
 
 
 
@@ -117,21 +99,31 @@ var init = function init () {
         physics.applyConstraints(entity, collisionObjects);
     };
 
-    var ground = new THREE.Mesh(new THREE.BoxGeometry(100000,1,100000), material);
+    /*
+    var ground = new THREE.Mesh(new THREE.BoxGeometry(6400,1,6400), materials.ground);
 
     collisionObjects.push(ground);
 
     renderer.addToScene(ground);
+    */
 
     var width = 32,
-        height = 128,
+        height = 96,
         depth = 32;
 
-    generator(seed, width, height, depth, function (error, mesh) {
-        mesh.position.set(0, height * 43, 0);
+    var generator = new Generator(seed, function (error, mesh, groundMesh) {
         renderer.addToScene(mesh);
         collisionObjects.push(mesh);
+        renderer.addToScene(groundMesh);
+        collisionObjects.push(groundMesh);
+        //collisionObjects.push(meshes[1]);
     });
+
+    for (var x = 0; x < 2; x++) {
+        for (var z = 0; z < 2; z++) {
+            generator.generate(x, z, width, height, depth);
+        }
+    }
 
     var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55 );
     directionalLight.position.set( 0.2, 1, 0.3 );
@@ -143,13 +135,13 @@ var init = function init () {
 
     var loop = new GameLoop(),
         player = new Player(camera, input, pointer),
-        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh, shaderMaterial);
+        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh, materials.dust);
 
     player.position.y = 1000;
     player.position.x = -3000;
 
     loop.update = function(dt) {
-        shaderMaterial.uniforms.time.value += dt;
+        materials.dust.uniforms.time.value += dt;
 
         input.update(dt);
         player.update(dt, gravity, checkCollision);

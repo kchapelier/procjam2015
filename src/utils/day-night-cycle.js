@@ -60,7 +60,7 @@ DayNightCycle.prototype.update = function (dt) {
 
     var duration = 2000;
 
-    var rampTime = (duration * 0.75 + this.time) % duration / duration,
+    var rampTime = (duration * 0.75 + this.time) % duration / duration, // 1
         ratioFog = Math.abs(Math.pow(Math.sin(rampTime * Math.PI), 1)),
         positionSunX = Math.sin((rampTime + 0) * Math.PI * 2),
         positionSunY = Math.cos((rampTime + 0) * Math.PI * 2),

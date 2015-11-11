@@ -22,14 +22,29 @@
 - [X] Add some shiny dust particles during the day, or at least see how it goes.
 - [X] Convert the generation code into a web worker.
 - [ ] Work on some music / soundscape.
+  - Did not do much
 
 ## TODO for Wednesday 2015-11-11
 
-- [ ] Find something interesting to do with the ground, ease it into the tower ?
+- [X] Find something interesting to do with the ground, ease it into the tower ?
+  - Perlin noise dunes, sigh I really wanted to avoid perlin and simplex noise this year.
+- [X] Test generation multiple building in the same world
+  - Now have a pool of web worker
 - [ ] Post processing
+
+## TODO for Thursday 2015-11-10
+
+- [ ] Work on some music / soundscape.
+- [ ] Dynamically load new chunks as needed
+- [ ] Generate the dust particles in the web workers
 
 ## TODO for .. later ?
 
-- [ ] A totally randomized generation
-- [ ] An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported.
-- [ ] Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)
+- [ ] (nice to have) Sfx for walking on the sand and on the buildings
+- [ ] (nice to have) Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)
+- [ ] (nice to have) Try making the sand looks a little less soft and silky.
+- [ ] (optimization) : Only test the physics for the chunk the player is currently in.
+- [ ] (optimization) : LOD on the ground ?
+- [ ] (optimization) : chunk the building in smaller parts to take advantage of the frustum culling ?
+- [ ] (could be post-jam) A totally randomized generation
+- [ ] (could be post-jam) An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported. How about the Gamepad API ?

@@ -1,7 +1,5 @@
 "use strict";
 
-//TODO make this into a web worker at some point
-
 var voxel = voxel = require("voxel"),
     rng = require('migl-rng'),
     Poisson = require('poisson-disk-sampling'),
@@ -158,8 +156,8 @@ var generateType5 = function generateType5 (shape, rng) {
 
 var generationTypes = [generateType1, generateType2, generateType3, generateType4, generateType5];
 
-var generateGeometryData = function generateGeometryData (seed, width, height, depth, callback) {
-    var random = rng.create(seed),
+var generateGeometryData = function generateGeometryData (seed, x, y, width, height, depth) {
+    var random = rng.create(seed + x + '-' + y),
         shape = [width,height,depth],
         type = (random.random() * generationTypes.length) | 0;
 
@@ -182,10 +180,10 @@ var generateGeometryData = function generateGeometryData (seed, width, height, d
     cell.iterate(3);
     */
 
-    callback(null, {
+    return {
         mesh: getMeshFromVoxel(ndarray),
         shape: shape
-    });
+    };
 };
 
 module.exports = generateGeometryData;

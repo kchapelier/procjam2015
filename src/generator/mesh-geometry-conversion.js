@@ -5,10 +5,9 @@ var convertToGeometry = function convertToGeometry (data, widthBlocks, heightBlo
         mesh = data.mesh,
         shape = data.shape,
         mWidth = widthBlocks * shape[0] / 2,
-        mHeight = heightBlocks * shape[1] / 2,
         mDepth = depthBlocks * shape[2] / 2,
-        slantedX = random() * 40 - 20,
-        slantedZ = random() * 40 - 20,
+        slantedX = 0, //random() * 40 - 20,
+        slantedZ = 0, //random() * 40 - 20,
         vertex,
         face,
         i;
@@ -17,7 +16,7 @@ var convertToGeometry = function convertToGeometry (data, widthBlocks, heightBlo
         vertex = mesh.vertices[i];
         geometry.vertices.push(new THREE.Vector3(
             vertex[1] * slantedX + (vertex[0]) * widthBlocks - mWidth,
-            (vertex[1]) * heightBlocks - mHeight,
+            (vertex[1]) * heightBlocks,
             vertex[1] * slantedZ + (vertex[2]) * depthBlocks - mDepth
         ));
     }

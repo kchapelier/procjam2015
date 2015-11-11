@@ -28,6 +28,10 @@
     "cellular-automata": "^0.1.0",
     "migl-rng": "^1.0.0",
     "poisson-disk-sampling": "git+https://github.com/kchapelier/poisson-disk-sampling.git",
-    "is-array": "^1.0.1"
+    "is-array": "^1.0.1",
+    "ndarray-gaussian-filter": "^1.0.0",
+    "ndarray": "^1.0.18",
+    "zeros": "^1.0.0",
+    "eventemitter3": "^1.1.1"
   }
 }
