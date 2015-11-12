@@ -44,17 +44,17 @@
 
 ## TODO for Friday 2015-11-13
 
-- [ ] (optimization) : Use a buffer geometry for the sand
-- [ ] (optimization) : Try to offload even more computation to the web workers (i.e. all the attributes values for the building)
+- [ ] Optimization : Use a buffer geometry for the sand
+- [ ] Optimization : Try to offload even more computation to the web workers (i.e. all the attributes values for the building)
 - [ ] Unload chunks after a while
-- [ ] (optimization) : Only test the physics for the chunk the player is currently in.
-- [ ] (optimization) : LOD on the ground ?
+- [ ] Optimization : Only test the physics for the chunk the player is currently in.
+- [ ] Optimization : LOD on the ground ?
 
 ## TODO for .. later ?
 
-- [ ] (nice to have) Sfx for walking on the sand and on the buildings
-- [ ] (nice to have) Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)
-- [ ] (nice to have) Try making the sand looks a little less soft and silky.
-- [ ] (optimization) : chunk the building in smaller parts to take advantage of the frustum culling ?
-- [ ] (could be post-jam) A totally randomized generation
-- [ ] (could be post-jam) An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported. How about the Gamepad API ?
+- [ ] Nice to have : Sfx for walking on the sand and on the buildings
+- [ ] Nice to have : Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)
+- [ ] Nice to have : Try making the sand looks a little less soft and silky.
+- [ ] Optimization : chunk the building in smaller parts to take advantage of the frustum culling ?
+- [ ] Post-jam : A totally randomized generation
+- [ ] Post-jam : An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported. How about the Gamepad API ?
