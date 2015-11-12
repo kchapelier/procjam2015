@@ -91,7 +91,7 @@ var init = function init () {
         }
     }
 
-    var radiusVisibility = 0;
+    var radiusVisibility = 2;
     // TODO use von-neumann neighbourhood instead of moore neighbourhood here
 
     var updateWorld = function (player) {

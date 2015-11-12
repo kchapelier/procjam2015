@@ -1,23 +1,12 @@
 var THREE = require('three');
 
-var convertToGeometry = function convertToGeometry (data, groundSegments) {
-    var groundGeometry = new THREE.PlaneGeometry(groundSegments * 100, groundSegments * 100, groundSegments, groundSegments);
+var convertToGeometry = function convertToGeometry (data) {
+    var geometry = new THREE.BufferGeometry();
 
-    groundGeometry.rotateX(-Math.PI / 2);
+    geometry.addAttribute('position', new THREE.BufferAttribute(data.position, 3));
+    geometry.addAttribute('normal', new THREE.BufferAttribute(data.normal, 3));
 
-    for (var x = 0; x <= groundSegments; x++) {
-        for (var z = 0; z <= groundSegments; z++) {
-            var i = x * (groundSegments + 1) + z;
-
-            groundGeometry.vertices[i].y = data[z * (groundSegments + 1) + x];
-        }
-    }
-
-    groundGeometry.computeFaceNormals();
-    groundGeometry.computeVertexNormals();
-    groundGeometry.normalsNeedUpdate = true;
-
-    return groundGeometry;
+    return geometry;
 };
 
 module.exports = convertToGeometry;

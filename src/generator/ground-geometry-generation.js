@@ -1,6 +1,28 @@
 var rng = require('migl-rng'),
     zeros = require('zeros');
 
+var THREE = require('three');
+
+var prepareBufferGeometry = function (data, groundSegments) {
+    var groundGeometry = new THREE.PlaneGeometry(groundSegments * 100, groundSegments * 100, groundSegments, groundSegments);
+
+    groundGeometry.rotateX(-Math.PI / 2);
+
+    for (var x = 0; x <= groundSegments; x++) {
+        for (var z = 0; z <= groundSegments; z++) {
+            var i = x * (groundSegments + 1) + z;
+
+            groundGeometry.vertices[i].y = data[z * (groundSegments + 1) + x];
+        }
+    }
+
+    groundGeometry.computeFaceNormals();
+    groundGeometry.computeVertexNormals();
+    groundGeometry.normalsNeedUpdate = true;
+
+    return new THREE.BufferGeometry().fromGeometry(groundGeometry);
+};
+
 var groundGeometryData = function groundGeometryData (seed, offsetX, offsetZ, groundSegments) {
     var random = rng.create(seed);
 
@@ -25,7 +47,12 @@ var groundGeometryData = function groundGeometryData (seed, offsetX, offsetZ, gr
         }
     }
 
-    return ndarrayMap2.data;
+    var bufferGeometry = prepareBufferGeometry(ndarrayMap2.data, groundSegments);
+
+    return {
+        position: bufferGeometry.attributes.position.array,
+        normal: bufferGeometry.attributes.normal.array
+    };
 };
 
 module.exports = groundGeometryData;
