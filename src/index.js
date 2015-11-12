@@ -84,14 +84,14 @@ var init = function init () {
         //collisionObjects.push(meshes[1]);
     });
 
-    for (var x = 0; x < 2; x++) {
-        for (var z = 0; z < 2; z++) {
+    for (var x = 0; x < 1; x++) {
+        for (var z = 0; z < 1; z++) {
             generator.generate(x, z);
             chunks[x+','+z] = true;
         }
     }
 
-    var radiusVisibility = 2;
+    var radiusVisibility = 0;
     // TODO use von-neumann neighbourhood instead of moore neighbourhood here
 
     var updateWorld = function (player) {
