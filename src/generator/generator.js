@@ -3,10 +3,9 @@
 var THREE = require('three'),
     WebWorkerQueue = require('./../utils/web-worker-queue'),
     materials = require('./../materials/materials'),
-    meshGeometryGeneration = require('./mesh-geometry-generation'),
     meshGeometryConversion = require('./mesh-geometry-conversion'),
-    groundGeometryGeneration = require('./ground-geometry-generation'),
     groundGeometryConversion = require('./ground-geometry-conversion'),
+    particleGeometryConversion = require('./particle-geometry-conversion'),
     rng = require('migl-rng');
 
 var Generator = function (seed, callback) {
@@ -19,12 +18,15 @@ var Generator = function (seed, callback) {
         var geometry = meshGeometryConversion(e.data.result.mesh, 100, 100, 100, 0.08, rng.create(e.data.request.seed).random),
             mesh = new THREE.Mesh(geometry, materials.building),
             groundGeometry = groundGeometryConversion(e.data.result.ground, 64),
-            groundMesh = new THREE.Mesh(groundGeometry, materials.sand);
+            groundMesh = new THREE.Mesh(groundGeometry, materials.sand),
+            particleGeometry = particleGeometryConversion(e.data.result.particle),
+            particleSystem = new THREE.Points(particleGeometry, materials.dust);
 
         groundMesh.position.set(e.data.request.posX * 6400, 0, e.data.request.posY * 6400);
-        mesh.position.set(e.data.request.posX * 6400, -100 * 10, e.data.request.posY * 6400);
+        mesh.position.set(e.data.request.posX * 6400, -1000, e.data.request.posY * 6400);
+        particleSystem.position.set(e.data.request.posX * 6400, 2000, e.data.request.posY * 6400);
 
-        callback(e.data.error, mesh, groundMesh);
+        callback(e.data.error, mesh, groundMesh, particleSystem);
     });
 };
 

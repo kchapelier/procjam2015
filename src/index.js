@@ -50,40 +50,7 @@ var init = function init () {
      */
 
 
-    /*
-    var radius = 2000,
-        particles = 1000;
 
-    var geometry = new THREE.BufferGeometry();
-
-    var positions = new Float32Array( particles * 3 );
-    var colors = new Float32Array( particles * 3 );
-    var offsets = new Float32Array( particles );
-
-    for ( var i = 0, i3 = 0; i < particles; i ++, i3 += 3 ) {
-
-        positions[ i3 ] = ( Math.random() * 2 - 1 ) * radius;
-        positions[ i3 + 1 ] = ( Math.pow(Math.random(), 2.5) * 2 - 1 ) * radius;
-        positions[ i3 + 2 ] = ( Math.random() * 2 - 1 ) * radius;
-
-        colors[ i3 ] = 0.9;
-        colors[ i3 + 1 ] = 0.9;
-        colors[ i3 + 2 ] = 0.7;
-
-        offsets[ i ] = Math.random() * 100 * Math.PI;
-
-    }
-
-    geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-    geometry.addAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
-    geometry.addAttribute( 'toffset', new THREE.BufferAttribute( offsets, 1 ) );
-
-    var particleSystem = new THREE.Points( geometry, materials.dust );
-
-    particleSystem.position.y = 2000;
-
-    renderer.addToScene( particleSystem );
-    /**/
 
 
 
@@ -107,11 +74,12 @@ var init = function init () {
     renderer.addToScene(ground);
     */
 
-    var generator = new Generator(seed, function (error, mesh, groundMesh) {
+    var generator = new Generator(seed, function (error, mesh, groundMesh, particleSystem) {
         renderer.addToScene(mesh);
         collisionObjects.push(mesh);
         renderer.addToScene(groundMesh);
         collisionObjects.push(groundMesh);
+        renderer.addToScene(particleSystem);
         //collisionObjects.push(meshes[1]);
     });
 

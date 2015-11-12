@@ -1,11 +1,11 @@
-attribute float toffset;
+attribute float offset;
 
 uniform float time;
 
 varying float vOffset;
 
 void main() {
-	vOffset = toffset;
+	vOffset = offset;
 
 	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 	gl_PointSize = 1800.0 / length( mvPosition.xyz );

@@ -36,7 +36,7 @@
 
 - [ ] Work on some music / soundscape.
 - [ ] Dynamically load new chunks as needed
-- [ ] Generate the dust particles in the web workers
+- [X] Generate the dust particles in the web workers
 - [X] Early check on firefox and safari to see what's blocking
   - Works on firefox, there are some issue with the gamepad control mapping but that's not critical.
   - Doesn't work on Safari 7.1 (cannot get an higher version of Safari without an OS upgrade, IE-style), actually it mostly does but the perfomances are atrocious.
