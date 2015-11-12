@@ -129,6 +129,8 @@ var init = function init () {
     player.position.y = 1000;
     player.position.x = -3000;
 
+    //loop.frameRate = 35;
+
     loop.update = function(dt) {
         materials.dust.uniforms.time.value += dt;
 
@@ -139,13 +141,12 @@ var init = function init () {
 
     loop.postUpdate = function(dt) {
         pointer.clearMovements();
-        dayNightCycle.update(dt);
-
-        updateWorld(player);
     };
 
     loop.render = function (dt) {
         renderer.render(dt);
+        dayNightCycle.update(dt);
+        updateWorld(player);
     };
 
     loop.start();

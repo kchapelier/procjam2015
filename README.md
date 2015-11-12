@@ -44,8 +44,9 @@
 
 ## TODO for Friday 2015-11-13
 
-- [ ] Optimization : Use a buffer geometry for the sand
-- [ ] Optimization : Try to offload even more computation to the web workers (i.e. all the attributes values for the building)
+- [X] Optimization : Use a buffer geometry for the sand
+- [X] Optimization : Use a buffer geometry for the building
+- [X] Optimization : Try to offload even more computation to the web workers (i.e. all the attributes values for the building)
 - [ ] Unload chunks after a while
 - [ ] Optimization : Only test the physics for the chunk the player is currently in.
 - [ ] Optimization : LOD on the ground ?

@@ -1,9 +1,59 @@
 "use strict";
 
-var voxel = voxel = require("voxel"),
+var THREE = require('three'),
+    voxel = require("voxel"),
     rng = require('migl-rng'),
     Poisson = require('poisson-disk-sampling'),
     CellularAutomata = require('cellular-automata');
+
+var prepareBufferGeometry = function (voxelData, shape, widthBlocks, heightBlocks, depthBlocks, normalPerturb, rng) {
+    var random = rng.random,
+        width = 100,
+        geometry = new THREE.Geometry(),
+        mWidth = widthBlocks * shape[0] / 2,
+        mDepth = depthBlocks * shape[2] / 2,
+        slantedX = 0, //random() * 40 - 20,
+        slantedZ = 0, //random() * 40 - 20,
+        vertex,
+        face,
+        i;
+
+    for(i = 0; i < voxelData.vertices.length; ++i) {
+        vertex = voxelData.vertices[i];
+        geometry.vertices.push(new THREE.Vector3(
+            vertex[1] * slantedX + (vertex[0]) * widthBlocks - mWidth,
+            (vertex[1]) * heightBlocks,
+            vertex[1] * slantedZ + (vertex[2]) * depthBlocks - mDepth
+        ));
+    }
+
+    for(i = 0; i < voxelData.faces.length; ++i) {
+        face = voxelData.faces[i];
+        geometry.faces.push(new THREE.Face3(
+            face[0],
+            face[1],
+            face[2]
+        ));
+    }
+
+    geometry.mergeVertices();
+    geometry.computeFaceNormals();
+
+    if (normalPerturb !== 0) {
+        for (i = 0; i < geometry.faces.length; i++) {
+            geometry.faces[i].normal.x += (random() - 0.5) * normalPerturb;
+            geometry.faces[i].normal.y += (random() - 0.5) * normalPerturb;
+            geometry.faces[i].normal.z += (random() - 0.5) * normalPerturb;
+        }
+
+        geometry.normalsNeedUpdate = true;
+    }
+
+    geometry.computeBoundingBox();
+    geometry.computeBoundingSphere();
+
+    return new THREE.BufferGeometry().fromGeometry(geometry);
+};
 
 var getMeshFromVoxel = function getMeshFromVoxel (ndarray) {
     // the lo and hi arrays are modified by the generate function, so we need to make sure we don't pass them by reference
@@ -159,12 +209,14 @@ var generationTypes = [generateType1, generateType2, generateType3, generateType
 var generateGeometryData = function generateGeometryData (seed, x, y) {
     var random = rng.create(seed + x + '-' + y),
         width = 32,
-        height = 16,// + 32 * ((Math.pow(random.random(), 0.5) * 5) | 0),
+        height = 16 + 32 * ((Math.pow(Math.abs(random.perlin2(x / 33, y / 26)), 0.5) * 5) | 0),
         depth = 32,
         shape = [width,height,depth],
         type = (random.random() * generationTypes.length) | 0;
 
     var ndarray = generationTypes[type](shape, random);
+    var voxelData = getMeshFromVoxel(ndarray);
+    var bufferGeometry = prepareBufferGeometry(voxelData, shape, 100, 100, 100, 0.08, random);
 
     /*
     cell.setOutOfBoundValue(1);
@@ -184,8 +236,8 @@ var generateGeometryData = function generateGeometryData (seed, x, y) {
     */
 
     return {
-        mesh: getMeshFromVoxel(ndarray),
-        shape: shape
+        position: bufferGeometry.attributes.position.array,
+        normal: bufferGeometry.attributes.normal.array
     };
 };
 

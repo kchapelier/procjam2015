@@ -6,8 +6,7 @@ var THREE = require('three'),
     Chunk = require('./../entities/chunk'),
     meshGeometryConversion = require('./mesh-geometry-conversion'),
     groundGeometryConversion = require('./ground-geometry-conversion'),
-    particleGeometryConversion = require('./particle-geometry-conversion'),
-    rng = require('migl-rng');
+    particleGeometryConversion = require('./particle-geometry-conversion');
 
 var Generator = function (seed, callback) {
     this.seed = seed;
@@ -19,7 +18,7 @@ var Generator = function (seed, callback) {
 
         //console.log('received : ', e.data.request.posX, ' , ', e.data.request.posY);
 
-        var geometry = meshGeometryConversion(e.data.result.mesh, 100, 100, 100, 0.08, rng.create(e.data.request.seed).random),
+        var geometry = meshGeometryConversion(e.data.result.mesh),
             mesh = new THREE.Mesh(geometry, materials.building),
             groundGeometry = groundGeometryConversion(e.data.result.ground, 64),
             groundMesh = new THREE.Mesh(groundGeometry, materials.sand),
