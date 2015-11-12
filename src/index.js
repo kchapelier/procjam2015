@@ -107,10 +107,6 @@ var init = function init () {
     renderer.addToScene(ground);
     */
 
-    var width = 32,
-        height = 96,
-        depth = 32;
-
     var generator = new Generator(seed, function (error, mesh, groundMesh) {
         renderer.addToScene(mesh);
         collisionObjects.push(mesh);
@@ -121,7 +117,7 @@ var init = function init () {
 
     for (var x = 0; x < 2; x++) {
         for (var z = 0; z < 2; z++) {
-            generator.generate(x, z, width, height, depth);
+            generator.generate(x, z);
         }
     }
 

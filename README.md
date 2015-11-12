@@ -37,6 +37,7 @@
 - [ ] Work on some music / soundscape.
 - [ ] Dynamically load new chunks as needed
 - [ ] Generate the dust particles in the web workers
+- [ ] Early check on firefox and safari to see what's blocking
 
 ## TODO for .. later ?
 

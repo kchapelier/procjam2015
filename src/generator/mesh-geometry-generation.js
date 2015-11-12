@@ -156,8 +156,11 @@ var generateType5 = function generateType5 (shape, rng) {
 
 var generationTypes = [generateType1, generateType2, generateType3, generateType4, generateType5];
 
-var generateGeometryData = function generateGeometryData (seed, x, y, width, height, depth) {
+var generateGeometryData = function generateGeometryData (seed, x, y) {
     var random = rng.create(seed + x + '-' + y),
+        width = 32,
+        height = 32 * (1 + (Math.pow(random.random(), 0.5) * 5) | 0),
+        depth = 32,
         shape = [width,height,depth],
         type = (random.random() * generationTypes.length) | 0;
 
