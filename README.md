@@ -31,23 +31,30 @@
 - [X] Test generation multiple building in the same world
   - Now have a pool of web worker
 - [ ] Post processing
+  - Performances are already an issue as it is.
 
-## TODO for Thursday 2015-11-10
+## TODO for Thursday 2015-11-12
 
 - [ ] Work on some music / soundscape.
-- [ ] Dynamically load new chunks as needed
+- [X] Dynamically load new chunks as needed
 - [X] Generate the dust particles in the web workers
 - [X] Early check on firefox and safari to see what's blocking
   - Works on firefox, there are some issue with the gamepad control mapping but that's not critical.
   - Doesn't work on Safari 7.1 (cannot get an higher version of Safari without an OS upgrade, IE-style), actually it mostly does but the perfomances are atrocious.
+
+## TODO for Friday 2015-11-13
+
+- [ ] (optimization) : Use a buffer geometry for the sand
+- [ ] (optimization) : Try to offload even more computation to the web workers (i.e. all the attributes values for the building)
+- [ ] Unload chunks after a while
+- [ ] (optimization) : Only test the physics for the chunk the player is currently in.
+- [ ] (optimization) : LOD on the ground ?
 
 ## TODO for .. later ?
 
 - [ ] (nice to have) Sfx for walking on the sand and on the buildings
 - [ ] (nice to have) Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)
 - [ ] (nice to have) Try making the sand looks a little less soft and silky.
-- [ ] (optimization) : Only test the physics for the chunk the player is currently in.
-- [ ] (optimization) : LOD on the ground ?
 - [ ] (optimization) : chunk the building in smaller parts to take advantage of the frustum culling ?
 - [ ] (could be post-jam) A totally randomized generation
 - [ ] (could be post-jam) An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported. How about the Gamepad API ?

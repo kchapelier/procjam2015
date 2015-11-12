@@ -54,9 +54,6 @@ var init = function init () {
 
 
 
-
-
-
     var sun = new Sun();
     renderer.addToScene(sun.mesh);
 
@@ -74,20 +71,48 @@ var init = function init () {
     renderer.addToScene(ground);
     */
 
-    var generator = new Generator(seed, function (error, mesh, groundMesh, particleSystem) {
-        renderer.addToScene(mesh);
-        collisionObjects.push(mesh);
-        renderer.addToScene(groundMesh);
-        collisionObjects.push(groundMesh);
-        renderer.addToScene(particleSystem);
+    var chunks = {};
+
+    var generator = new Generator(seed, function (error, chunk) {
+        chunks[x+','+z] = chunk;
+
+        renderer.addToScene(chunk.building);
+        collisionObjects.push(chunk.building);
+        renderer.addToScene(chunk.ground);
+        collisionObjects.push(chunk.ground);
+        renderer.addToScene(chunk.particles);
         //collisionObjects.push(meshes[1]);
     });
 
     for (var x = 0; x < 2; x++) {
         for (var z = 0; z < 2; z++) {
             generator.generate(x, z);
+            chunks[x+','+z] = true;
         }
     }
+
+    var radiusVisibility = 2;
+    // TODO use von-neumann neighbourhood instead of moore neighbourhood here
+
+    var updateWorld = function (player) {
+        var posX = (Math.floor(0.5 + player.position.x / 6400)),
+            posY = (Math.floor(0.5 + player.position.z / 6400));
+
+        //console.log(posX, posY, !!chunks[x+','+y])
+
+        for (var x = posX - radiusVisibility; x <= posX + radiusVisibility; x++) {
+            for (var y = posY - radiusVisibility; y <= posY + radiusVisibility; y++) {
+                if (!chunks[x+','+y]) {
+                    generator.generate(x, y);
+                    chunks[x+','+y] = true;
+                }
+            }
+        }
+
+
+    };
+
+
 
     var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55 );
     directionalLight.position.set( 0.2, 1, 0.3 );
@@ -115,6 +140,8 @@ var init = function init () {
     loop.postUpdate = function(dt) {
         pointer.clearMovements();
         dayNightCycle.update(dt);
+
+        updateWorld(player);
     };
 
     loop.render = function (dt) {
