@@ -72,7 +72,7 @@ Player.prototype.update = function (dt, gravity, checkCollision) {
     this.camera.position.x = this.position.x = this.position.x + this.movement.x;
     this.camera.position.y = this.position.y = this.position.y + this.movement.y;
 
-    this.camera.position.y+= this.height * 0.75;
+    this.camera.position.y+= this.height * 0.25;
 
     checkCollision(this);
 };
