@@ -19,9 +19,9 @@ var World = require('./world');
 var materials = require('./materials/materials');
 
 var options = {
-    highFrameRate: false,
-    particles: false,
-    highDefGround: false
+    highFrameRate: true,
+    particles: true,
+    highDefGround: true
 };
 
 var init = function init () {
