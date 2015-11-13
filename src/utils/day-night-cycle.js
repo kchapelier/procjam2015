@@ -14,7 +14,7 @@ Things to read
  */
 
 var maxFog = 0.00045,
-    minFog = 0.00016;
+    minFog = 0.00015;
 
 var fogColorRed = [0xB9 / 255, 0xB9 / 255, 0x66 / 255, 0x40 / 255],
     fogColorGreen = [0xB9 / 255, 0xB9 / 255, 0x30 / 255, 0x30 / 255],
@@ -89,7 +89,7 @@ DayNightCycle.prototype.update = function (player, dt) {
 
     this.shaderMaterial.uniforms.color.value.set(this.sun.material.color);
 
-    this.sun.position.set(player.position.x + positionSunX * 50000, player.position.y * 0.5 + positionSunY * 50000, player.position.z + 50000);
+    this.sun.position.set(player.position.x + positionSunX * 50000, positionSunY * 50000, player.position.z + 50000);
     this.renderer.setClearColor(this.fog.color, 1);
 };
 

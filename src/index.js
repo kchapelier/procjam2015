@@ -45,11 +45,6 @@ var init = function init () {
         }
     });
 
-
-    var seed = options.seed;
-
-    console.log(options);
-
     var element = document.getElementById('game');
 
     element.addEventListener('click', function () {
@@ -72,10 +67,14 @@ var init = function init () {
     renderer.addToScene(hemisphereLight);
     renderer.addToScene(directionalLight);
 
-    player.position.y = 1000;
+    player.position.y = 1500;
     player.position.x = -3000;
 
-    var world = new World(seed, renderer, player, 2, options),
+    var loopStart = function loopStart () {
+        loop.start();
+    };
+
+    var world = new World(options.seed, renderer, player, 2, loopStart, options),
         collisionObjects = world.collisionObjects;
 
     var checkCollision = function checkCollision (entity) {
@@ -102,8 +101,6 @@ var init = function init () {
         dayNightCycle.update(player, dt);
         world.postRender();
     };
-
-    loop.start();
 };
 
 module.exports = init;
