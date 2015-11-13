@@ -19,13 +19,36 @@ var World = require('./world');
 var materials = require('./materials/materials');
 
 var options = {
-    highFrameRate: true,
-    particles: true,
-    highDefGround: true
+    highFrameRate: false,
+    particles: false,
+    highDefGround: false,
+    seed: (new Date()).toISOString()
 };
 
 var init = function init () {
-    var seed = window.location.hash.replace(/#/g, '') || (new Date()).toISOString();
+    document.location.search.split(/[?&]/g).map(function(option) {
+        option = option.split('=');
+
+        switch (option[0]) {
+            case 'highFrameRate':
+                options.highFrameRate = !!option[1];
+                break;
+            case 'particles':
+                options.particles = !!option[1];
+                break;
+            case 'highDefGround':
+                options.highDefGround = !!option[1];
+                break;
+            case 'seed':
+                options.seed = !!option[1] ? option[1] : options.seed;
+                break;
+        }
+    });
+
+
+    var seed = options.seed;
+
+    console.log(options);
 
     var element = document.getElementById('game');
 

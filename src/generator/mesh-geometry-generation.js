@@ -12,8 +12,8 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
         geometry = new THREE.Geometry(),
         mWidth = widthBlocks * shape[0] / 2,
         mDepth = depthBlocks * shape[2] / 2,
-        slantedX = 0, //random() * 40 - 20,
-        slantedZ = 0, //random() * 40 - 20,
+        slantedX = random() * 50 - 25,
+        slantedZ = random() * 50 - 25,
         vertex,
         face,
         i;
