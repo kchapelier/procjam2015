@@ -29,12 +29,12 @@ var WebWorkerQueue = function WebWorkerQueue (script, number) {
     this.workers.forEach(function workerIteration (worker, id) {
         self.availableWorkers.push(worker);
         worker.task = 0;
-        worker.id = id;
+        //worker.id = id;
 
         worker.addEventListener('message', function onMessage (e) {
             worker.task--;
 
-            console.log('message', worker.id, worker.task);
+            //console.log('message', worker.id, worker.task);
 
             if (worker.task < 1 && self.availableWorkers.indexOf(worker) === -1) {
                 self.availableWorkers.push(worker);
@@ -46,7 +46,7 @@ var WebWorkerQueue = function WebWorkerQueue (script, number) {
         worker.addEventListener('error', function onError (e) {
             worker.task--;
 
-            console.log('error', worker.id, worker.task);
+            //console.log('error', worker.id, worker.task);
 
             if (worker.task < 1 && self.availableWorkers.indexOf(worker) === -1) {
                 self.availableWorkers.push(worker);
@@ -72,7 +72,7 @@ WebWorkerQueue.prototype.postMessage = function (aMessage, transferList) {
     var worker = this.getWorker();
     worker.task++;
 
-    console.log('post', worker.id);
+    //console.log('post', worker.id);
 
     worker.postMessage(aMessage, transferList);
 };

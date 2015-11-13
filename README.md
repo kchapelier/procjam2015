@@ -35,27 +35,29 @@
 
 ## TODO for Thursday 2015-11-12
 
-- [ ] Work on some music / soundscape.
 - [X] Dynamically load new chunks as needed
 - [X] Generate the dust particles in the web workers
 - [X] Early check on firefox and safari to see what's blocking
   - Works on firefox, there are some issue with the gamepad control mapping but that's not critical.
   - Doesn't work on Safari 7.1 (cannot get an higher version of Safari without an OS upgrade, IE-style), actually it mostly does but the perfomances are atrocious.
-
-## TODO for Friday 2015-11-13
-
 - [X] Optimization : Use a buffer geometry for the sand
 - [X] Optimization : Use a buffer geometry for the building
 - [X] Optimization : Try to offload even more computation to the web workers (i.e. all the attributes values for the building)
-- [ ] Unload chunks after a while
+
+## TODO for Friday 2015-11-13
+
+- [X] Better chunk loading and overall world management
+- [X] Unload chunks after a while
 - [ ] Optimization : Only test the physics for the chunk the player is currently in.
 - [ ] Optimization : LOD on the ground ?
+- [ ] Work on some music / soundscape.
 
 ## TODO for .. later ?
 
-- [ ] Nice to have : Sfx for walking on the sand and on the buildings
-- [ ] Nice to have : Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)
-- [ ] Nice to have : Try making the sand looks a little less soft and silky.
 - [ ] Optimization : chunk the building in smaller parts to take advantage of the frustum culling ?
+- [ ] Post-jam : Sfx for walking on the sand and on the buildings
+- [ ] Post-jam : Try making a fake volumetric fog by hacking the material, see [ShaderLib.js](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js) and [fog_fragment.glsl](https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderChunk/fog_fragment.glsl)
+- [ ] Post-jam : Try making the sand looks a little less soft and silky.
+- [ ] Post-jam : "Take me where I was last time" feature, using localforage on unload event ?
 - [ ] Post-jam : A totally randomized generation
 - [ ] Post-jam : An experimental build on Electron ? Fullscreen API and pointer lock API are supposedly supported. How about the Gamepad API ?

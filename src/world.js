@@ -75,9 +75,31 @@ World.prototype.postRender = function () {
             }
         }
 
-        // TODO unload distant chunks after a while
+        this.unloadDistantChunks(this.radiusVisibility * 2);
 
         this.dirty = false;
+    }
+};
+
+World.prototype.unloadDistantChunks = function (maxDistance) {
+    var keys = Object.keys(this.chunks),
+        distance,
+        key,
+        chunk;
+
+    for (var i = 0; i < keys.length; i++) {
+        key = keys[i];
+        chunk = this.chunks[key];
+
+        distance = Math.max(Math.abs(this.playerChunkX - chunk.x), Math.abs(this.playerChunkY - chunk.y)); // chebyshevDistance
+
+        if (distance > maxDistance) {
+            this.renderer.removeFromScene(chunk.building);
+            this.renderer.removeFromScene(chunk.ground);
+            this.renderer.removeFromScene(chunk.particles);
+
+            this.chunks[key] = false;
+        }
     }
 };
 

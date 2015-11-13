@@ -75,20 +75,23 @@ module.exports = {
 
         domElement.appendChild(renderer.domElement);
     },
-    addMultipleToScene: function (objects) {
-        for(var i = 0; i < objects.length; i++) {
-            this.scene.add(objects[i]);
-        }
-    },
     addToScene: function (object) {
         if (isArray(object)) {
-            this.addMultipleToScene(object);
+            for(var i = 0; i < object.length; i++) {
+                this.scene.add(object[i]);
+            }
         } else {
             this.scene.add(object);
         }
     },
     removeFromScene: function (object) {
-        this.scene.remove(object);
+        if (isArray(object)) {
+            for(var i = 0; i < object.length; i++) {
+                this.scene.remove(object[i]);
+            }
+        } else {
+            this.scene.remove(object);
+        }
     },
     render: function () {
         //controls.update();
