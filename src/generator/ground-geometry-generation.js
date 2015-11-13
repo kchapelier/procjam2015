@@ -3,8 +3,8 @@ var rng = require('migl-rng'),
 
 var THREE = require('three');
 
-var prepareBufferGeometry = function (data, groundSegments) {
-    var groundGeometry = new THREE.PlaneGeometry(groundSegments * 100, groundSegments * 100, groundSegments, groundSegments);
+var prepareBufferGeometry = function (data, segmentSize, groundSegments) {
+    var groundGeometry = new THREE.PlaneGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments);
 
     groundGeometry.rotateX(-Math.PI / 2);
 
@@ -23,23 +23,26 @@ var prepareBufferGeometry = function (data, groundSegments) {
     return new THREE.BufferGeometry().fromGeometry(groundGeometry);
 };
 
-var groundGeometryData = function groundGeometryData (seed, offsetX, offsetZ, groundSegments) {
+var groundGeometryData = function groundGeometryData (seed, offsetX, offsetZ, chunkSize, groundSegments) {
     var random = rng.create(seed);
 
-    var ndarrayMap2 = zeros([groundSegments + 1, groundSegments + 1]),
+    var segmentSize = chunkSize / groundSegments,
+        ndarrayMap2 = zeros([groundSegments + 1, groundSegments + 1]),
         x,
         y,
         z,
         dist,
         offsettedX, offsettedZ;
 
+    var ratioGeneration = segmentSize / 100; // the algorithm was originally written for segmentSize of 100, we don't want the result to be dramatically different depending on the segmentSize
+
     offsetX = offsetX * groundSegments;
     offsetZ = offsetZ * groundSegments;
 
     for (x = 0; x < ndarrayMap2.shape[0]; x++) {
-        offsettedX = x + offsetX;
+        offsettedX = (x + offsetX) * ratioGeneration;
         for (z = 0; z < ndarrayMap2.shape[1]; z++) {
-            offsettedZ = z + offsetZ;
+            offsettedZ = (z + offsetZ) * ratioGeneration;
 
             dist = Math.abs(random.perlin2(offsettedZ / 400, offsettedX / 400));
 
@@ -49,7 +52,7 @@ var groundGeometryData = function groundGeometryData (seed, offsetX, offsetZ, gr
         }
     }
 
-    var bufferGeometry = prepareBufferGeometry(ndarrayMap2.data, groundSegments);
+    var bufferGeometry = prepareBufferGeometry(ndarrayMap2.data, segmentSize, groundSegments);
 
     return {
         position: bufferGeometry.attributes.position.array,

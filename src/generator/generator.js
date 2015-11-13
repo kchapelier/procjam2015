@@ -20,7 +20,7 @@ var Generator = function (seed, callback) {
 
         var geometry = meshGeometryConversion(e.data.result.mesh),
             mesh = new THREE.Mesh(geometry, materials.building),
-            groundGeometry = groundGeometryConversion(e.data.result.ground, 64),
+            groundGeometry = groundGeometryConversion(e.data.result.ground),
             groundMesh = new THREE.Mesh(groundGeometry, materials.sand),
             particleGeometry = particleGeometryConversion(e.data.result.particle),
             particleSystem = new THREE.Points(particleGeometry, materials.dust);

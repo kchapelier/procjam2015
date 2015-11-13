@@ -10,7 +10,7 @@ self.addEventListener('message', function (e) {
         y = e.data.posY;
 
     var meshGeometry = meshGeometryGeneration(seed, x, y),
-        groundGeometry = groundGeometryGeneration(seed, x, y, 64),
+        groundGeometry = groundGeometryGeneration(seed, x, y, 6400, 64),
         particleGeometry = particleGeometryGeneration(1800, 2500, 1800, 1000);
 
     self.postMessage({
