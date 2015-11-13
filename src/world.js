@@ -3,7 +3,7 @@
 var Generator = require('./generator/generator'),
     Chunk = require('./entities/chunk');
 
-var World = function World (seed, renderer, player, radiusVisibility) {
+var World = function World (seed, renderer, player, radiusVisibility, options) {
     this.seed = seed;
     this.renderer = renderer;
     this.player = player;
@@ -15,12 +15,18 @@ var World = function World (seed, renderer, player, radiusVisibility) {
 
     var self = this;
 
-    this.generator = new Generator(seed, function (error, chunk) {
+    this.generator = new Generator(seed, options, function (error, chunk) {
         self.chunks[chunk.x + ',' + chunk.y] = chunk;
 
-        renderer.addToScene(chunk.building);
         renderer.addToScene(chunk.ground);
-        renderer.addToScene(chunk.particles);
+
+        if (chunk.building) {
+            renderer.addToScene(chunk.building);
+        }
+
+        if (chunk.particles) {
+            renderer.addToScene(chunk.particles);
+        }
     });
 };
 
@@ -33,6 +39,8 @@ World.prototype.radiusVisibility = null;
 
 World.prototype.chunks = null;
 World.prototype.collisionObjects = null;
+
+var currentAndAdjacent = [[0,0], [1,0], [0,1], [-1,0], [0,-1]];
 
 World.prototype.update = function () {
     var newChunkX = (Math.floor(0.5 + this.player.position.x / 6400)),
@@ -48,10 +56,12 @@ World.prototype.update = function () {
     }
 
     if (this.collisionObjects.length === 0) {
-        var chunk = this.chunks[newChunkX + ',' + newChunkY];
+        for (var i = 0; i < currentAndAdjacent.length; i++) {
+            var chunk = this.chunks[(newChunkX + currentAndAdjacent[i][0]) + ',' + (newChunkY + currentAndAdjacent[i][1])];
 
-        if (chunk && chunk.building) {
-            this.collisionObjects.push(chunk.ground, chunk.building);
+            if (chunk && chunk.ground) {
+                this.collisionObjects.push(chunk.ground, chunk.building);
+            }
         }
     }
 };
@@ -94,9 +104,15 @@ World.prototype.unloadDistantChunks = function (maxDistance) {
         distance = Math.max(Math.abs(this.playerChunkX - chunk.x), Math.abs(this.playerChunkY - chunk.y)); // chebyshevDistance
 
         if (distance > maxDistance) {
-            this.renderer.removeFromScene(chunk.building);
             this.renderer.removeFromScene(chunk.ground);
-            this.renderer.removeFromScene(chunk.particles);
+
+            if(chunk.building) {
+                this.renderer.removeFromScene(chunk.building);
+            }
+
+            if(chunk.particles) {
+                this.renderer.removeFromScene(chunk.particles);
+            }
 
             this.chunks[key] = false;
         }

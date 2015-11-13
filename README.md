@@ -49,8 +49,8 @@
 - [X] Better chunk loading and overall world management
 - [X] Unload chunks after a while
 - [X] Optimization : Only test the physics for the chunk the player is currently in ...
-- [ ] ... and its direct neighbours.
-- [ ] Options (ground LOD, particles, 60/30 fps)
+- [X] ... and its direct neighbours.
+- [X] Options (ground LOD, particles, 60/30 fps)
 - [ ] Work on some music / soundscape.
 
 ## TODO for Saturday 2015-11-14

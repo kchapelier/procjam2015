@@ -8,8 +8,10 @@ var THREE = require('three'),
     groundGeometryConversion = require('./ground-geometry-conversion'),
     particleGeometryConversion = require('./particle-geometry-conversion');
 
-var Generator = function (seed, callback) {
+var Generator = function (seed, options, callback) {
     this.seed = seed;
+    this.includeParticles = options.particles;
+    this.definitionGround = options.highDefGround ? 64 : 16;
     this.worker = new WebWorkerQueue('./build/worker.js', Math.max(2, (navigator.hardwareConcurrency / 1.5) | 0));
 
     var self = this;
@@ -18,30 +20,38 @@ var Generator = function (seed, callback) {
 
         //console.log('received : ', e.data.request.posX, ' , ', e.data.request.posY);
 
-        var geometry = meshGeometryConversion(e.data.result.mesh),
-            mesh = new THREE.Mesh(geometry, materials.building),
-            groundGeometry = groundGeometryConversion(e.data.result.ground),
-            groundMesh = new THREE.Mesh(groundGeometry, materials.sand),
-            particleGeometry = particleGeometryConversion(e.data.result.particle),
-            particleSystem = new THREE.Points(particleGeometry, materials.dust);
+        var building,
+            particles,
+            ground;
 
-        groundMesh.position.set(e.data.request.posX * 6400, 0, e.data.request.posY * 6400);
-        mesh.position.set(e.data.request.posX * 6400, -1000, e.data.request.posY * 6400);
-        particleSystem.position.set(e.data.request.posX * 6400, 2000, e.data.request.posY * 6400);
+        if (e.data.result.ground) {
+            ground = new THREE.Mesh(groundGeometryConversion(e.data.result.ground), materials.sand);
+            ground.position.set(e.data.request.posX * 6400, 0, e.data.request.posY * 6400);
+        }
+
+        if (e.data.result.mesh) {
+            building = new THREE.Mesh(meshGeometryConversion(e.data.result.mesh), materials.building);
+            building.position.set(e.data.request.posX * 6400, -1000, e.data.request.posY * 6400);
+        }
+
+        if (e.data.result.particle) {
+            particles = new THREE.Points(particleGeometryConversion(e.data.result.particle), materials.dust);
+            particles.position.set(e.data.request.posX * 6400, 2000, e.data.request.posY * 6400);
+        }
 
         callback(e.data.error, new Chunk(
             e.data.request.posX,
             e.data.request.posY,
-            mesh,
-            groundMesh,
-            particleSystem
+            building,
+            ground,
+            particles
         ));
     });
 };
 
 Generator.prototype.generate = function (posX, posY) {
     //console.log('generate : ', posX, ' , ', posY);
-    this.worker.postMessage({ seed: this.seed, posX: posX, posY: posY });
+    this.worker.postMessage({ seed: this.seed, posX: posX, posY: posY, includeParticles: this.includeParticles, definitionGround: this.definitionGround });
 };
 
 module.exports = Generator;

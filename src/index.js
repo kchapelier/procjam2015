@@ -18,10 +18,14 @@ var World = require('./world');
 
 var materials = require('./materials/materials');
 
+var options = {
+    highFrameRate: false,
+    particles: false,
+    highDefGround: false
+};
+
 var init = function init () {
     var seed = window.location.hash.replace(/#/g, '') || (new Date()).toISOString();
-
-
 
     var element = document.getElementById('game');
 
@@ -33,52 +37,29 @@ var init = function init () {
     renderer.infectDom(element);
     renderer.useCamera(camera);
 
-    var gravity = new THREE.Vector3(0, -1.2, 0);
-
-    var material = new THREE.MeshPhongMaterial({
-        color: 0x202020,
-        specular: 0xE0E0E0,
-        shininess: 11,
-        shading: THREE.SmoothShading,
-        metal: true
-    });
-
-    // axis and center of the scene for reference
-    renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(9000,10,10), new THREE.MeshNormalMaterial()));
-    renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(10,9000,10), new THREE.MeshNormalMaterial()));
-    renderer.addToScene(new THREE.Mesh(new THREE.BoxGeometry(10,10,9000), new THREE.MeshNormalMaterial()));
-
-
-
-
-
-
-    var sun = new Sun();
-    renderer.addToScene(sun.mesh);
-
-    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55 );
-    directionalLight.position.set( 0.2, 1, 0.3 );
-
-    var hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x111111, 1.5);
-
-    renderer.addToScene(hemisphereLight);
-    renderer.addToScene(directionalLight);
-
     var loop = new GameLoop(),
         player = new Player(camera, input, pointer),
+        gravity = new THREE.Vector3(0, -1.2, 0),
+        directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55),
+        hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x111111, 1.5),
+        sun = new Sun(),
         dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh, materials.dust);
+
+    renderer.addToScene(sun.mesh);
+    renderer.addToScene(hemisphereLight);
+    renderer.addToScene(directionalLight);
 
     player.position.y = 1000;
     player.position.x = -3000;
 
-    var world = new World(seed, renderer, player, 2),
+    var world = new World(seed, renderer, player, 2, options),
         collisionObjects = world.collisionObjects;
 
     var checkCollision = function checkCollision (entity) {
         physics.applyConstraints(entity, collisionObjects);
     };
 
-    //loop.frameRate = 30;
+    loop.frameRate = options.highFrameRate ? null : 35;
 
     loop.update = function(dt) {
         materials.dust.uniforms.time.value += dt;
