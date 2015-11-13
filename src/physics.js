@@ -96,7 +96,7 @@ physics.constraintY = function (entity, meshCollisions) {
             entity.movement.y = 0;
             entity.currentJumpStrength = 0;
         }
-    } else if (yDirection < 0 && entity.entity === 0) {
+    } else if (yDirection < 0 && entity.jumpCount === 0) {
         //falling from a platform, set currentJump to avoid double jump
         entity.jumpCount = 1;
     }
