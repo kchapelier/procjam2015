@@ -6,7 +6,7 @@ var THREE = require('three'),
     Poisson = require('poisson-disk-sampling'),
     CellularAutomata = require('cellular-automata');
 
-var prepareBufferGeometry = function (voxelData, shape, widthBlocks, heightBlocks, depthBlocks, normalPerturb, rng) {
+var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, widthBlocks, heightBlocks, depthBlocks, normalPerturb, rng) {
     var random = rng.random,
         width = 100,
         geometry = new THREE.Geometry(),
@@ -65,7 +65,7 @@ var getMeshFromVoxel = function getMeshFromVoxel (ndarray) {
     return voxel.meshers.monotone(voxelData.data, [voxelData.shape[2], voxelData.shape[1], voxelData.shape[0]]);
 };
 
-var generateType1 = function (shape, rng) {
+var generateType1 = function generateType1 (shape, rng) {
     var random = rng.random,
         cell = new CellularAutomata(shape, 0);
 
@@ -82,7 +82,7 @@ var generateType1 = function (shape, rng) {
     return cell.currentArray;
 };
 
-var generateType2 = function (shape, rng) {
+var generateType2 = function generateType2 (shape, rng) {
     var random = rng.random,
         cell = new CellularAutomata(shape, 0),
         sampling = new Poisson(shape, 20, 30, 30, random),

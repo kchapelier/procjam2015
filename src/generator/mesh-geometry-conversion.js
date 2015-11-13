@@ -1,6 +1,6 @@
 var THREE = require('three');
 
-var convertToGeometry = function convertToGeometry (data) {
+var meshGeometryConversion = function meshGeometryConversion (data) {
     var geometry = new THREE.BufferGeometry();
 
     geometry.addAttribute('position', new THREE.BufferAttribute(data.position, 3));
@@ -10,4 +10,4 @@ var convertToGeometry = function convertToGeometry (data) {
 
 };
 
-module.exports = convertToGeometry;
+module.exports = meshGeometryConversion;

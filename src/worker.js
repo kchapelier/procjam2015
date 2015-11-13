@@ -4,7 +4,7 @@ var meshGeometryGeneration = require('./generator/mesh-geometry-generation'),
     groundGeometryGeneration = require('./generator/ground-geometry-generation'),
     particleGeometryGeneration = require('./generator/particle-geometry-generation');
 
-self.addEventListener('message', function (e) {
+self.addEventListener('message', function onMessage (e) {
     var seed = e.data.seed,
         x = e.data.posX,
         y = e.data.posY;

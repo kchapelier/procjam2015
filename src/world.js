@@ -1,0 +1,84 @@
+"use strict";
+
+var Generator = require('./generator/generator'),
+    Chunk = require('./entities/chunk');
+
+var World = function World (seed, renderer, player, radiusVisibility) {
+    this.seed = seed;
+    this.renderer = renderer;
+    this.player = player;
+    this.radiusVisibility = radiusVisibility || 1;
+
+    this.chunks = {};
+    this.collisionObjects = [];
+    this.dirty = false;
+
+    var self = this;
+
+    this.generator = new Generator(seed, function (error, chunk) {
+        self.chunks[chunk.x + ',' + chunk.y] = chunk;
+
+        renderer.addToScene(chunk.building);
+        renderer.addToScene(chunk.ground);
+        renderer.addToScene(chunk.particles);
+    });
+};
+
+World.prototype.seed = null;
+World.prototype.renderer = null;
+World.prototype.player = null;
+World.prototype.playerChunkX = null;
+World.prototype.playerChunkY = null;
+World.prototype.radiusVisibility = null;
+
+World.prototype.chunks = null;
+World.prototype.collisionObjects = null;
+
+World.prototype.update = function () {
+    var newChunkX = (Math.floor(0.5 + this.player.position.x / 6400)),
+        newChunkY = (Math.floor(0.5 + this.player.position.z / 6400));
+
+    if (newChunkX !== this.playerChunkX || newChunkY !== this.playerChunkY) {
+        this.playerChunkX = newChunkX;
+        this.playerChunkY = newChunkY;
+        this.dirty = true;
+
+        //update the collisionObjects
+        this.collisionObjects.length = 0;
+    }
+
+    if (this.collisionObjects.length === 0) {
+        var chunk = this.chunks[newChunkX + ',' + newChunkY];
+
+        if (chunk && chunk.building) {
+            this.collisionObjects.push(chunk.ground, chunk.building);
+        }
+    }
+};
+
+World.prototype.postRender = function () {
+    // if we changed chunk, check and load any missing chunk in the visibility
+    if (this.dirty) {
+        var minX = this.playerChunkX - this.radiusVisibility,
+            maxX = this.playerChunkX + this.radiusVisibility,
+            minY = this.playerChunkY - this.radiusVisibility,
+            maxY = this.playerChunkY + this.radiusVisibility,
+            x,
+            y;
+
+        for (x = minX; x <= maxX; x++) {
+            for (y = minY; y <= maxY; y++) {
+                if (!this.chunks[x+','+y]) {
+                    this.generator.generate(x, y);
+                    this.chunks[x+','+y] = true; // placeholder to avoid loading multiple times the same chunk
+                }
+            }
+        }
+
+        // TODO unload distant chunks after a while
+
+        this.dirty = false;
+    }
+};
+
+module.exports = World;

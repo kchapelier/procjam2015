@@ -2,7 +2,7 @@
 
 var THREE = require('three');
 
-var convertToGeometry = function convertToGeometry (data) {
+var particleGeometryConversion = function particleGeometryConversion (data) {
     var geometry = new THREE.BufferGeometry();
 
     geometry.addAttribute( 'position', new THREE.BufferAttribute( data.positions, 3 ) );
@@ -11,4 +11,4 @@ var convertToGeometry = function convertToGeometry (data) {
     return geometry;
 };
 
-module.exports = convertToGeometry;
+module.exports = particleGeometryConversion;

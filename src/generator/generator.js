@@ -14,7 +14,7 @@ var Generator = function (seed, callback) {
 
     var self = this;
 
-    this.worker.addEventListener('message', function (e) {
+    this.worker.addEventListener('message', function onMessage (e) {
 
         //console.log('received : ', e.data.request.posX, ' , ', e.data.request.posY);
 

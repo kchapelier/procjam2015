@@ -3,7 +3,7 @@ var rng = require('migl-rng'),
 
 var THREE = require('three');
 
-var prepareBufferGeometry = function (data, segmentSize, groundSegments) {
+var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, groundSegments) {
     var groundGeometry = new THREE.PlaneGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments);
 
     groundGeometry.rotateX(-Math.PI / 2);
