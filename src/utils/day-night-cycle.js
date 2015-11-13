@@ -55,10 +55,10 @@ var wshaper = function wshaper (value, shape) {
     return value;
 };
 
-DayNightCycle.prototype.update = function (dt) {
+DayNightCycle.prototype.update = function (player, dt) {
     this.time = this.time + dt / 100;
 
-    var duration = 2000;
+    var duration = 3000;
 
     var rampTime = (duration * 0.75 + this.time) % duration / duration, // 1
         ratioFog = Math.abs(Math.pow(Math.sin(rampTime * Math.PI), 1)),
@@ -89,7 +89,7 @@ DayNightCycle.prototype.update = function (dt) {
 
     this.shaderMaterial.uniforms.color.value.set(this.sun.material.color);
 
-    this.sun.position.set(positionSunX * 50000, positionSunY * 50000, 50000);
+    this.sun.position.set(player.position.x + positionSunX * 50000, player.position.y * 0.5 + positionSunY * 50000, player.position.z + 50000);
     this.renderer.setClearColor(this.fog.color, 1);
 };
 

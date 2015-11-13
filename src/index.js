@@ -99,7 +99,7 @@ var init = function init () {
 
     loop.render = function (dt) {
         renderer.render(dt);
-        dayNightCycle.update(dt);
+        dayNightCycle.update(player, dt);
         world.postRender();
     };
 
