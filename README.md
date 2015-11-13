@@ -48,9 +48,15 @@
 
 - [X] Better chunk loading and overall world management
 - [X] Unload chunks after a while
-- [ ] Optimization : Only test the physics for the chunk the player is currently in.
-- [ ] Optimization : LOD on the ground ?
+- [X] Optimization : Only test the physics for the chunk the player is currently in ...
+- [ ] ... and its direct neighbours.
+- [ ] Options (ground LOD, particles, 60/30 fps)
 - [ ] Work on some music / soundscape.
+
+## TODO for Saturday 2015-11-14
+
+- [ ] Last quick polish
+- [ ] Publish on itch.io
 
 ## TODO for .. later ?
 
