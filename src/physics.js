@@ -13,9 +13,8 @@ physics.applyConstraints = function (entity, meshCollisions) {
 physics.constraintX = function (entity, meshCollisions) {
     var intersects = [],
         direction = entity.movement,
-        length = direction.length();
-
-    var rayCastingDistance = length + entity.width / 2;
+        length = direction.length(),
+        rayCastingDistance = length + entity.width / 2;
 
     ray.direction.x = direction.x;
     ray.direction.y = 0;

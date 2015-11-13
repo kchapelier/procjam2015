@@ -10,7 +10,7 @@ var THREE = require('three'),
 
 var Generator = function (seed, callback) {
     this.seed = seed;
-    this.worker = new WebWorkerQueue('./build/worker.js');
+    this.worker = new WebWorkerQueue('./build/worker.js', Math.max(2, (navigator.hardwareConcurrency / 1.5) | 0));
 
     var self = this;
 
