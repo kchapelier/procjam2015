@@ -1,5 +1,4 @@
-var rng = require('migl-rng'),
-    zeros = require('zeros');
+var zeros = require('zeros');
 
 var THREE = require('three');
 
@@ -23,9 +22,7 @@ var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, g
     return new THREE.BufferGeometry().fromGeometry(groundGeometry);
 };
 
-var groundGeometryData = function groundGeometryData (seed, offsetX, offsetZ, chunkSize, groundSegments) {
-    var random = rng.create(seed);
-
+var groundGeometryData = function groundGeometryData (rng, offsetX, offsetZ, chunkSize, groundSegments) {
     var segmentSize = chunkSize / groundSegments,
         ndarrayMap2 = zeros([groundSegments + 1, groundSegments + 1]),
         x,
@@ -44,10 +41,10 @@ var groundGeometryData = function groundGeometryData (seed, offsetX, offsetZ, ch
         for (z = 0; z < ndarrayMap2.shape[1]; z++) {
             offsettedZ = (z + offsetZ) * ratioGeneration;
 
-            dist = Math.abs(random.perlin2(offsettedZ / 400, offsettedX / 400));
+            dist = Math.abs(rng.perlin2(offsettedZ / 400, offsettedX / 400));
 
-            y = (random.perlin2(offsettedX/ 100, offsettedZ/100) * random.perlin2(offsettedX/ 66, offsettedZ/66) + random.perlin2(offsettedX/ 33, offsettedZ/33)) * 2000;
-            y += Math.pow(random.perlin3(dist + y / 500, offsettedX/ 90, offsettedZ/1000) * random.perlin2(offsettedX/ 760, offsettedZ/76) , 3) * 10000;
+            y = (rng.perlin2(offsettedX/ 100, offsettedZ/100) * rng.perlin2(offsettedX/ 66, offsettedZ/66) + rng.perlin2(offsettedX/ 33, offsettedZ/33)) * 2000;
+            y += Math.pow(rng.perlin3(dist + y / 500, offsettedX/ 90, offsettedZ/1000) * rng.perlin2(offsettedX/ 760, offsettedZ/76) , 3) * 10000;
             ndarrayMap2.set(x, z, y / Math.pow(2, 0.5 + dist));
         }
     }

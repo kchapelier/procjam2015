@@ -1,0 +1,96 @@
+/* any web designer help would be welcome */
+
+body {
+    margin:0;
+    padding:0;
+    background:#050500;
+    color:#FFF;
+}
+
+.cover {
+    position:absolute;
+    bottom:0;
+    top:0;
+    width:4.5%;
+    background-color:white;
+}
+
+h1 {
+    font-family: 'Raleway', sans-serif;
+    font-size:27px;
+    text-indent: 15px;
+    margin:50px 10% 30px 5%;
+    font-weight:600;
+    padding: 0 0 5px 0;
+}
+
+h1 .version {
+    padding-left:3px;
+    font-weight:400;
+    font-size:19px;
+    color:#FFFFCC;
+}
+
+h2 {
+    font-family: 'Raleway', sans-serif;
+    font-size:18px;
+    text-indent: 15px;
+    margin:20px 10% 15px 5%;
+    font-weight:400;
+}
+
+.block {
+    letter-spacing: 0.5px;
+    line-height: 22px;
+    font-family: 'Lato', sans-serif;
+    font-weight:100;
+    font-size:14px;
+    margin:0 8%;
+}
+
+a, a:visited {
+    color:#FFFFCC;
+    text-decoration: none;
+}
+
+.block a:hover {
+    opacity:0.8;
+}
+
+p {
+    display:block;
+    margin:0;
+    padding:0;
+}
+
+.settings-help {
+    padding: 20px 0;
+}
+
+.btn {
+    margin-top:18px;
+    -webkit-border-radius: 2;
+    -moz-border-radius: 2;
+    border-radius: 2px;
+    color: #000000;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    font-weight:400;
+    background: #FFFFFF;
+    padding: 7px 14px 7px 14px;
+    text-decoration: none;
+    border:none;
+    cursor:pointer;
+}
+
+.btn:hover {
+    background: #FFFFCC;
+    text-decoration: none;
+}
+
+.github-corner {
+    position:absolute;
+    top:0;
+    right:0;
+    border:0;
+}

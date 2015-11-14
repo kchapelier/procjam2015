@@ -112,6 +112,8 @@ World.prototype.postRender = function () {
 
         this.loadChunks(minX, maxX, minY, maxY);
 
+        //console.log(this.chunks[this.playerChunkX + ',' + this.playerChunkY]);
+
         this.unloadDistantChunks(this.radiusVisibility * 2);
 
         this.dirty = false;

@@ -1,8 +1,7 @@
 "use strict";
 
 var THREE = require('three'),
-    voxel = require("voxel"),
-    rng = require('migl-rng'),
+    voxel = require('voxel'),
     Poisson = require('poisson-disk-sampling'),
     CellularAutomata = require('cellular-automata');
 
@@ -37,6 +36,7 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
     }
 
     geometry.mergeVertices();
+    geometry.rotateY((random() - 0.5) * Math.PI / 8);
     geometry.computeFaceNormals();
 
     if (normalPerturb !== 0) {
@@ -206,34 +206,17 @@ var generateType5 = function generateType5 (shape, rng) {
 
 var generationTypes = [generateType1, generateType2, generateType3, generateType4, generateType5];
 
-var generateGeometryData = function generateGeometryData (seed, x, y) {
-    var random = rng.create(seed + x + '-' + y),
-        width = 32,
-        height = 16 + 32 * ((Math.pow(Math.abs(random.perlin2(x / 33, y / 26)), 0.5) * 5) | 0),
+var generateGeometryData = function generateGeometryData (rng, x, y) {
+    var width = 32,
+        heightRate = ((Math.pow(Math.random(), 0.75) * 6) | 0),
+        height = 16 + 32 * (heightRate < 3 ? 0 : heightRate),
         depth = 32,
         shape = [width,height,depth],
-        type = (random.random() * generationTypes.length) | 0;
+        type = (rng.random() * generationTypes.length) | 0;
 
-    var ndarray = generationTypes[type](shape, random);
-    var voxelData = getMeshFromVoxel(ndarray);
-    var bufferGeometry = prepareBufferGeometry(voxelData, shape, 100, 100, 100, 0.08, random);
-
-    /*
-    cell.setOutOfBoundValue(1);
-    cell.setRule('E 6..26/1..9');
-    cell.iterate(3);
-
-    cell.setOutOfBoundValue('wrap');
-    cell.setRule('E 2,4,6/0 von-neumann');
-    cell.iterate(2);
-
-    cell.setRule('ES26/B0,24..26');
-    cell.iterate(8);
-
-    cell.setOutOfBoundValue(0);
-    cell.setRule('ES3..26/B26');
-    cell.iterate(3);
-    */
+    var ndarray = generationTypes[type](shape, rng),
+        voxelData = getMeshFromVoxel(ndarray),
+        bufferGeometry = prepareBufferGeometry(voxelData, shape, 100, 100, 100, 0.08, rng);
 
     return {
         position: bufferGeometry.attributes.position.array,

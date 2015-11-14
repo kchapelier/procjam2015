@@ -1,5 +1,7 @@
 "use strict";
 
+// we don't really care about the position of the particles, lets just use Math.random
+
 var generateGeometryData = function generateGeometryData (radiusX, radiusY, radiusZ, particles) {
     var positions = new Float32Array( particles * 3),
         offsets = new Float32Array( particles),

@@ -12,13 +12,19 @@ var THREE = require('three'),
     DayNightCycle = require('./utils/day-night-cycle'),
     Player = require('./entities/player'),
     Sun = require('./entities/sun'),
-    physics = require('./physics');
+    physics = require('./physics'),
+    sound = require('./sound');
+
+var loadSounds = function loadSounds () {
+    sound.load('music', 'procjam', 1, true, true);
+};
 
 var World = require('./world');
 
 var materials = require('./materials/materials');
 
 var options = {
+    fullscreen: false,
     highFrameRate: false,
     particles: false,
     highDefGround: false,
@@ -26,10 +32,15 @@ var options = {
 };
 
 var init = function init () {
+    loadSounds();
+
     document.location.search.split(/[?&]/g).map(function(option) {
         option = option.split('=');
 
         switch (option[0]) {
+            case 'fullscreen':
+                options.fullscreen = !!option[1];
+                break;
             case 'highFrameRate':
                 options.highFrameRate = !!option[1];
                 break;
@@ -48,7 +59,10 @@ var init = function init () {
     var element = document.getElementById('game');
 
     element.addEventListener('click', function () {
-        fullscreen.requestFullscreen(element);
+        if (options.fullscreen) {
+            fullscreen.requestFullscreen(element);
+        }
+
         pointer.requestPointerLock(document, element);
     });
 
@@ -71,6 +85,7 @@ var init = function init () {
     player.position.x = -3000;
 
     var loopStart = function loopStart () {
+        var musicPlaying = sound.play('music');
         loop.start();
     };
 

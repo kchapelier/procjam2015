@@ -2,7 +2,8 @@
 
 var meshGeometryGeneration = require('./generator/mesh-geometry-generation'),
     groundGeometryGeneration = require('./generator/ground-geometry-generation'),
-    particleGeometryGeneration = require('./generator/particle-geometry-generation');
+    particleGeometryGeneration = require('./generator/particle-geometry-generation'),
+    rng = require('migl-rng');
 
 self.addEventListener('message', function onMessage (e) {
     var seed = e.data.seed,
@@ -11,9 +12,16 @@ self.addEventListener('message', function onMessage (e) {
         x = e.data.posX,
         y = e.data.posY;
 
-    var meshGeometry = meshGeometryGeneration(seed, x, y),
-        groundGeometry = groundGeometryGeneration(seed, x, y, 6400, definitionGround),
-        particleGeometry = includeParticles ? particleGeometryGeneration(1800, 2500, 1800, 1000) : null;
+    var generalRng = rng.create(seed),
+        buildingRng = rng.create(seed + x + '-' + y);
+
+
+
+    var needBuilding = Math.abs(generalRng.perlin2(x / 7, y / 8)) > 0.35;
+
+    var meshGeometry = needBuilding ? meshGeometryGeneration(buildingRng, x, y) : null,
+        groundGeometry = groundGeometryGeneration(generalRng, x, y, 6400, definitionGround),
+        particleGeometry = includeParticles && needBuilding ? particleGeometryGeneration(1800, 2500, 1800, 2000) : null;
 
     self.postMessage({
         request: e.data,
