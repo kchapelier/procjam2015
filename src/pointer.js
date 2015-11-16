@@ -6,6 +6,13 @@ var pointer = {
     requestPointerLock : function (document, element) {
         var self = this;
 
+        // do not allow to apply the event listener multiple times
+        if (document.pointerLockElement === element ||
+            document.mozPointerLockElement === element ||
+            document.webkitPointerLockElement === element) {
+            return false;
+        }
+
         document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
         element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
