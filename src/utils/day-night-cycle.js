@@ -85,6 +85,7 @@ DayNightCycle.prototype.update = function (player, dt) {
     this.hemisphereLight.color.set(this.fog.color);
     this.directionalLight.color.set(this.fog.color);
     this.directionalLight.position.set(positionSunX, positionSunY, 1);
+    this.directionalLight.target.position.set(player.x, 0, player.z);
     this.directionalLight.position.normalize();
 
     this.shaderMaterial.uniforms.color.value.set(this.sun.material.color);
