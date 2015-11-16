@@ -1,7 +1,7 @@
 "use strict";
 
 var THREE = require('three'),
-    WebWorkerQueue = require('./../utils/web-worker-queue'),
+    WebWorkerPool = require('./../utils/web-worker-pool'),
     materials = require('./../materials/materials'),
     Chunk = require('./../entities/chunk'),
     meshGeometryConversion = require('./mesh-geometry-conversion'),
@@ -12,7 +12,7 @@ var Generator = function (seed, options, callback) {
     this.seed = seed;
     this.includeParticles = options.particles;
     this.definitionGround = options.highDefGround ? 64 : 16;
-    this.worker = new WebWorkerQueue('./build/worker.js', Math.max(2, (navigator.hardwareConcurrency / 1.5) | 0));
+    this.worker = new WebWorkerPool('./build/worker.js', Math.max(2, (navigator.hardwareConcurrency / 1.5) | 0));
 
     var self = this;
 

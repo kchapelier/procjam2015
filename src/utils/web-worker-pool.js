@@ -14,7 +14,7 @@ var createWebWorkers = function createWebWorkers (script, number) {
     return workers;
 };
 
-var WebWorkerQueue = function WebWorkerQueue (script, number) {
+var WebWorkerPool = function WebWorkerQueue (script, number) {
     this.script = script;
     this.number = number || navigator.hardwareConcurrency || 2;
 
@@ -57,7 +57,7 @@ var WebWorkerQueue = function WebWorkerQueue (script, number) {
     });
 };
 
-WebWorkerQueue.prototype.getWorker = function () {
+WebWorkerPool.prototype.getWorker = function () {
     var result = this.availableWorkers.pop();
 
     if (!result) {
@@ -68,7 +68,7 @@ WebWorkerQueue.prototype.getWorker = function () {
     return result;
 };
 
-WebWorkerQueue.prototype.postMessage = function (aMessage, transferList) {
+WebWorkerPool.prototype.postMessage = function (aMessage, transferList) {
     var worker = this.getWorker();
     worker.task++;
 
@@ -77,8 +77,8 @@ WebWorkerQueue.prototype.postMessage = function (aMessage, transferList) {
     worker.postMessage(aMessage, transferList);
 };
 
-WebWorkerQueue.prototype.addEventListener = function (event, callback) {
+WebWorkerPool.prototype.addEventListener = function (event, callback) {
     this.emitter.addListener(event, callback);
 };
 
-module.exports = WebWorkerQueue;
+module.exports = WebWorkerPool;
