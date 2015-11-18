@@ -79,7 +79,7 @@ var generateType1 = function generateType1 (shape, rng) {
         .apply('E 3..26/26 moore', 1)
         .apply('E 12..26/26 moore', 7);
 
-    return cell.currentArray;
+    return cell.array;
 };
 
 var generateType2 = function generateType2 (shape, rng) {
@@ -94,7 +94,7 @@ var generateType2 = function generateType2 (shape, rng) {
     sampling.fill();
 
     for (i = 0; i < sampling.samplePoints.length; i++) {
-        cell.currentArray.set(
+        cell.array.set(
             sampling.samplePoints[i][0] | 0,
             sampling.samplePoints[i][1] | 0,
             sampling.samplePoints[i][2] | 0,
@@ -111,7 +111,7 @@ var generateType2 = function generateType2 (shape, rng) {
         .apply('ES3..26/B26', 1)
         .apply('ES12..26/B26', 6);
 
-    return cell.currentArray;
+    return cell.array;
 };
 
 var generateType3 = function generateType3 (shape, rng) {
@@ -124,7 +124,7 @@ var generateType3 = function generateType3 (shape, rng) {
     sampling.fill();
 
     for (var i = 0; i < sampling.samplePoints.length; i++) {
-        cell.currentArray.set(
+        cell.array.set(
             sampling.samplePoints[i][0] | 0,
             sampling.samplePoints[i][1] | 0,
             sampling.samplePoints[i][2] | 0,
@@ -143,7 +143,7 @@ var generateType3 = function generateType3 (shape, rng) {
         .apply('E 7..26/8..18 axis 3', 4)
         .apply('E 3..6/5..6 axis 1', 10);
 
-    return cell.currentArray;
+    return cell.array;
 };
 
 
@@ -155,7 +155,7 @@ var generateType4 = function generateType4 (shape, rng) {
     sampling.fill();
 
     for (var i = 0; i < sampling.samplePoints.length; i++) {
-        cell.currentArray.set(
+        cell.array.set(
             sampling.samplePoints[i][0] | 0,
             sampling.samplePoints[i][1] | 0,
             sampling.samplePoints[i][2] | 0,
@@ -171,7 +171,7 @@ var generateType4 = function generateType4 (shape, rng) {
         .apply('E 26/0,23,26 moore', 8)
         .apply('E 2..6/6 von-neumann', 2);
 
-    return cell.currentArray;
+    return cell.array;
 };
 
 var generateType5 = function generateType5 (shape, rng) {
@@ -182,7 +182,7 @@ var generateType5 = function generateType5 (shape, rng) {
     sampling.fill();
 
     for (var i = 0; i < sampling.samplePoints.length; i++) {
-        cell.currentArray.set(
+        cell.array.set(
             sampling.samplePoints[i][0] | 0,
             sampling.samplePoints[i][1] | 0,
             sampling.samplePoints[i][2] | 0,
@@ -201,7 +201,7 @@ var generateType5 = function generateType5 (shape, rng) {
         .setOutOfBoundValue(1)
         .apply('E 0..26/13..14 moore', 4);
 
-    return cell.currentArray;
+    return cell.array;
 };
 
 var generationTypes = [generateType1, generateType2, generateType3, generateType4, generateType5];

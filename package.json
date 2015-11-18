@@ -6,9 +6,9 @@
   "main": "src/index.js",
   "scripts": {
     "build": "browserify src/index.js -d --s main -u crypto > build/main.js",
-    "build-shaders": "cd ./src/shaders/src/ && files2json \"./*.glsl\" > ./../shaders.json && cd ../../..",
+    "build-shaders": "files2json \"./src/shaders/src/**/*.glsl\" -r ./src/shaders/src/ > ./src/shaders/shaders.json",
     "build-worker": "browserify src/worker.js -d --s main -u crypto > build/worker.js",
-    "build-prod": "cd ./src/shaders/src/ && files2json \"./*.glsl\" > ./../shaders.json && cd ../../.. && browserify src/index.js --s main -u crypto | uglifyjs > build/main.js && browserify src/worker.js -d --s main -u crypto | uglifyjs > build/worker.js",
+    "build-prod": "files2json \"./src/shaders/src/**/*.glsl\" -r ./src/shaders/src/ > ./src/shaders/shaders.json && cd ../../.. && browserify src/index.js --s main -u crypto | uglifyjs > build/main.js && browserify src/worker.js -d --s main -u crypto | uglifyjs > build/worker.js",
     "watch": "watchify src/index.js --s main -u crypto -o build/main.js -v"
   },
   "repository": {
@@ -26,7 +26,7 @@
     "three": "^0.73.0",
     "migl-input": "^2.0.1",
     "migl-gameloop": "^1.2.1",
-    "cellular-automata": "^0.1.0",
+    "cellular-automata": "^1.0.0",
     "migl-rng": "^1.0.0",
     "poisson-disk-sampling": "git+https://github.com/kchapelier/poisson-disk-sampling.git",
     "is-array": "^1.0.1",
