@@ -32,11 +32,11 @@ var input = new Input({
         group: 'axisViewH'
     },
     viewYPlus: {
-        keys: ['C', '<pad1-button8>'],
+        keys: ['<pad1-button8>'],
         group: 'axisViewY'
     },
     viewYMinus: {
-        keys: ['<pad1-button6>'],
+        keys: ['C', '<pad1-button6>'],
         group: 'axisViewY'
     }
 });

@@ -24,7 +24,7 @@
   "dependencies": {
     "voxel": "git+https://github.com/kchapelier/voxel.git",
     "three": "^0.73.0",
-    "migl-input": "^2.0.1",
+    "migl-input": "^2.0.2",
     "migl-gameloop": "^1.2.1",
     "cellular-automata": "^1.0.0",
     "migl-rng": "^1.0.0",
