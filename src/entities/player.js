@@ -40,7 +40,6 @@ Player.prototype.update = function (dt, gravity, checkCollision) {
         this.movement.applyAxisAngle(axisUp, -this.camera.theta + PI_2);
     }
 
-    // TODO refactor in a jump action
     if (this.viewYPlusCommand.active) {
         this.movement.y = this.viewYPlusCommand.value * 2.5;
     } else {
@@ -68,13 +67,17 @@ Player.prototype.update = function (dt, gravity, checkCollision) {
         dt
     );
 
-    this.camera.position.z = this.position.z = this.position.z + this.movement.z;
-    this.camera.position.x = this.position.x = this.position.x + this.movement.x;
-    this.camera.position.y = this.position.y = this.position.y + this.movement.y;
-
-    this.camera.position.y+= this.height * 0.25;
+    this.position.z = this.position.z + this.movement.z;
+    this.position.x = this.position.x + this.movement.x;
+    this.position.y = this.position.y + this.movement.y;
 
     checkCollision(this);
+
+    this.camera.position.z = this.position.z;
+    this.camera.position.x = this.position.x;
+    this.camera.position.y = this.position.y;
+
+    this.camera.position.y+= this.height * 0.25;
 };
 
 
