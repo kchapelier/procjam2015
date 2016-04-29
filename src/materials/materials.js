@@ -11,24 +11,13 @@ var materials = {
         color: 0xCCCCAA,
         specular: 0x202020,
         shininess: 8,
-        shading: THREE.SmoothShading,
-        metal: false
+        shading: THREE.SmoothShading
     }),
-    building: new THREE.MeshPhongMaterial({
-        color: 0x202020,
-        specular: 0xE0E0E0,
-        shininess: 11,
+    building: new THREE.MeshStandardMaterial({
+        color: 0x6C6C6C,
         shading: THREE.SmoothShading,
-        metal: true
-    }),
-    ground: new THREE.MeshPhongMaterial({
-        color: 0x202020,
-        specular: 0xE0E0E0,
-        shininess: 11,
-        shading: THREE.SmoothShading,
-        metal: true,
-        transparent: true,
-        opacity: 0.35
+        metalness: 0.68,
+        roughness: 0.60
     }),
     sun: new THREE.MeshBasicMaterial({
         color: 0xF5F5D0,

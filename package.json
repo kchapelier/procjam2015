@@ -31,9 +31,8 @@
     "migl-input": "^2.0.2",
     "migl-rng": "^1.0.0",
     "ndarray": "^1.0.18",
-    "ndarray-gaussian-filter": "^1.0.0",
     "poisson-disk-sampling": "0.0.1",
-    "three": "^0.73.0",
+    "three": "^0.76.1",
     "voxel": "git+https://github.com/kchapelier/voxel.git",
     "zeros": "^1.0.0"
   }
