@@ -13,11 +13,8 @@ self.addEventListener('message', function onMessage (e) {
         y = e.data.posY;
 
     var generalRng = rng.create(seed),
-        buildingRng = rng.create(seed + x + '-' + y);
-
-
-
-    var needBuilding = Math.abs(generalRng.perlin2(x / 7, y / 8)) > 0.35;
+        needBuilding = Math.abs(generalRng.perlin2(x / 7, y / 8)) > 0.35,
+        buildingRng = needBuilding ? rng.create(seed + x + '-' + y) : null;
 
     var meshGeometry = needBuilding ? meshGeometryGeneration(buildingRng, x, y) : null,
         groundGeometry = groundGeometryGeneration(generalRng, x, y, 6400, definitionGround),

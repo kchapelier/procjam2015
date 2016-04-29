@@ -43,8 +43,9 @@ h2 {
     letter-spacing: 0.5px;
     line-height: 22px;
     font-family: 'Lato', sans-serif;
-    font-weight:100;
-    font-size:14px;
+    font-weight:300;
+    font-size:15px;
+    -webkit-font-smoothing: antialiased;
     margin:0 8%;
 }
 
