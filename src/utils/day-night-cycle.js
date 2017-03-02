@@ -14,33 +14,15 @@ Things to read
  */
 
 var maxFog = 0.00045,
-    minFog = 0.00015;
-
-var fogColorRed = [0xB9 / 255, 0xB9 / 255, 0x66 / 255, 0x40 / 255],
+    minFog = 0.00015,
+    fogColorRed = [0xB9 / 255, 0xB9 / 255, 0x66 / 255, 0x40 / 255],
     fogColorGreen = [0xB9 / 255, 0xB9 / 255, 0x30 / 255, 0x30 / 255],
-    fogColorBlue = [0xA9 / 255, 0xA9 / 255, 0x80 / 255, 0x66 / 255];
-
-var sunColorRed = [0xF5 / 255, 0xF5 / 255],
+    fogColorBlue = [0xA9 / 255, 0xA9 / 255, 0x80 / 255, 0x66 / 255],
+    sunColorRed = [0xF5 / 255, 0xF5 / 255],
     sunColorGreen = [0xF5 / 255, 0xC0 / 255],
     sunColorBlue = [0xD0 / 255, 0x80 / 255];
 
-var DayNightCycle = function DayNightCycle (renderer, fog, directionalLight, hemisphereLight, sun, shaderMaterial) {
-    this.renderer = renderer;
-    this.fog = fog;
-    this.directionalLight = directionalLight;
-    this.hemisphereLight = hemisphereLight;
-    this.sun = sun;
-    this.shaderMaterial = shaderMaterial;
-    this.time = 0;
-};
-
-var lerp = function lerp (min, max, t) {
-    return t * max + (1 - t) * min;
-};
-
 var wshaper = function wshaper (value, shape) {
-    "use strict";
-
     value *= shape.length - 1;
 
     var start = Math.floor(value),
@@ -55,19 +37,25 @@ var wshaper = function wshaper (value, shape) {
     return value;
 };
 
+var DayNightCycle = function DayNightCycle (renderer, fog, directionalLight, hemisphereLight, sun, shaderMaterial) {
+    this.renderer = renderer;
+    this.fog = fog;
+    this.directionalLight = directionalLight;
+    this.hemisphereLight = hemisphereLight;
+    this.sun = sun;
+    this.shaderMaterial = shaderMaterial;
+    this.time = 0;
+};
+
 DayNightCycle.prototype.update = function (player, dt) {
-    this.time = this.time + dt / 100;
+    this.time = this.time + dt;
 
-    var duration = 3000;
-
-    var rampTime = (duration * 0.75 + this.time) % duration / duration, // 1
-        ratioFog = Math.abs(Math.pow(Math.sin(rampTime * Math.PI), 1)),
-        positionSunX = Math.sin((rampTime + 0) * Math.PI * 2),
-        positionSunY = Math.cos((rampTime + 0) * Math.PI * 2),
+    var duration = 300000,
+        rampTimePi = (duration * 0.75 + this.time) % duration / duration * Math.PI,
+        ratioFog = Math.abs(Math.sin(rampTimePi)),
+        positionSunX = Math.sin(rampTimePi * 2),
+        positionSunY = Math.cos(rampTimePi * 2),
         ratioSun = Math.pow(1 - Math.max(positionSunY, 0), 3);
-
-    //var gameTime = (rampTime + 0.5) * 24 % 24 * 60 | 0;
-    //console.log(gameTime / 60 | 0, ':', gameTime % 60);
 
     this.sun.material.color.setRGB(
         wshaper(ratioSun, sunColorRed),
@@ -75,7 +63,8 @@ DayNightCycle.prototype.update = function (player, dt) {
         wshaper(ratioSun, sunColorBlue)
     );
 
-    this.fog.density = lerp(minFog, maxFog, ratioFog);
+    this.fog.density = ratioFog * maxFog + (1 - ratioFog) * minFog; //lerp
+
     this.fog.color.setRGB(
         wshaper(ratioFog, fogColorRed),
         wshaper(ratioFog, fogColorGreen),
@@ -85,8 +74,6 @@ DayNightCycle.prototype.update = function (player, dt) {
     this.hemisphereLight.color.set(this.fog.color);
     this.directionalLight.color.set(this.fog.color);
     this.directionalLight.position.set(positionSunX, positionSunY, 1);
-    this.directionalLight.target.position.set(player.x, 0, player.z);
-    this.directionalLight.position.normalize();
 
     this.shaderMaterial.uniforms.color.value.set(this.sun.material.color);
 
