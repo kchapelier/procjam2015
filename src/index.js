@@ -69,7 +69,7 @@ var init = function init () {
     renderer.infectDom(element);
     renderer.useCamera(camera);
 
-    var loop = new GameLoop(),
+    var loop,
         player = new Player(camera, input, pointer),
         gravity = new THREE.Vector3(0, -1.2, 0),
         directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55),
@@ -96,26 +96,28 @@ var init = function init () {
         physics.applyConstraints(entity, collisionObjects);
     };
 
-    loop.frameRate = options.highFrameRate ? null : 35;
+    loop = new GameLoop({
+        update: function(dt) {
+            materials.dust.uniforms.time.value += dt;
 
-    loop.update = function(dt) {
-        materials.dust.uniforms.time.value += dt;
+            input.update(dt);
+            player.update(dt, gravity, checkCollision);
+            camera.update(dt);
+        },
+        postUpdate: function(dt) {
+            world.update();
+            pointer.clearMovements();
+        },
+        render: function (dt) {
+            renderer.render();
+            dayNightCycle.update(player, dt);
+            world.postRender();
+        }
+    });
 
-        input.update(dt);
-        player.update(dt, gravity, checkCollision);
-        camera.update(dt);
-    };
-
-    loop.postUpdate = function(dt) {
-        world.update();
-        pointer.clearMovements();
-    };
-
-    loop.render = function (dt) {
-        renderer.render(dt);
-        dayNightCycle.update(player, dt);
-        world.postRender();
-    };
+    if (!options.highFrameRate) {
+        loop.setFrameRate(30);
+    }
 };
 
 module.exports = init;

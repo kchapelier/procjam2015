@@ -27,7 +27,7 @@
     "howler": "^1.1.28",
     "is-array": "^1.0.1",
     "localforage": "^1.3.0",
-    "migl-gameloop": "^1.2.1",
+    "migl-gameloop": "^2.0.0",
     "migl-input": "^2.0.2",
     "migl-rng": "^1.0.0",
     "ndarray": "^1.0.18",
