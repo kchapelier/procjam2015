@@ -8,7 +8,7 @@ var input = new Input({
         group: 'action'
     },
     up: {
-        keys: ['<up>', 'W', '<pad1-button13>', '<pad1-axis2-negative>'],
+        keys: ['<up>', 'W', 'Z', '<pad1-button13>', '<pad1-axis2-negative>'],
         group: 'axisV'
     },
     down: {
@@ -16,7 +16,7 @@ var input = new Input({
         group: 'axisV'
     },
     left: {
-        keys: ['<left>', 'A', '<pad1-button15>', '<pad1-axis1-negative>'],
+        keys: ['<left>', 'A', 'Q', '<pad1-button15>', '<pad1-axis1-negative>'],
         group: 'axisH'
     },
     right: {
