@@ -1,7 +1,6 @@
 "use strict";
 
-var isArray = require('is-array'),
-    baseWidth = window.innerWidth,
+var baseWidth = window.innerWidth,
     baseHeight = window.innerHeight,
     pixelRatio = 1; //(typeof window.devicePixelRatio !== 'undefined' ? window.devicePixelRatio : 1);
 
@@ -47,22 +46,10 @@ module.exports = {
         domElement.appendChild(renderer.domElement);
     },
     addToScene: function (object) {
-        if (isArray(object)) {
-            for(var i = 0; i < object.length; i++) {
-                this.scene.add(object[i]);
-            }
-        } else {
-            this.scene.add(object);
-        }
+        this.scene.add(object);
     },
     removeFromScene: function (object) {
-        if (isArray(object)) {
-            for(var i = 0; i < object.length; i++) {
-                this.scene.remove(object[i]);
-            }
-        } else {
-            this.scene.remove(object);
-        }
+        this.scene.remove(object);
     },
     render: function () {
         renderer.clear();
