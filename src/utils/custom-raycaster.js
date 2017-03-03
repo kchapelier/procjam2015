@@ -1,7 +1,5 @@
 "use strict";
 
-var THREE = require('three');
-
 var CustomRaycaster = function CustomRaycaster () {
     this.ray = new THREE.Ray(new THREE.Vector3(), new THREE.Vector3());
     this.near = 0;

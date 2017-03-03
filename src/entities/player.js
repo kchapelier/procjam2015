@@ -1,7 +1,6 @@
 "use strict";
 
-var THREE = require('three'),
-    axisUp = new THREE.Vector3(0, 1, 0),
+var axisUp = new THREE.Vector3(0, 1, 0),
     PI_2 = Math.PI / 2;
 
 var Player = function Player (camera, input, pointer) {

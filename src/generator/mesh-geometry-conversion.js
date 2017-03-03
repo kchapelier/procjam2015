@@ -1,4 +1,4 @@
-var THREE = require('three');
+"use strict";
 
 var meshGeometryConversion = function meshGeometryConversion (data) {
     var geometry = new THREE.BufferGeometry();

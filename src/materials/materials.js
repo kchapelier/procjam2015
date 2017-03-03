@@ -1,7 +1,6 @@
 "use strict";
 
-var THREE = require('three'),
-    shaders = require('./../shaders/shaders.json');
+var shaders = require('./../shaders/shaders.json');
 
 var materials = {
     debug: new THREE.MeshNormalMaterial({

@@ -1,7 +1,6 @@
 "use strict";
 
-var THREE = require('three'),
-    GameLoop = require('migl-gameloop'),
+var GameLoop = require('migl-gameloop'),
     renderer = require('./renderer'),
     Camera = require('./camera'),
     camera = new Camera(70, renderer.screenWidth / renderer.screenHeight),

@@ -1,7 +1,6 @@
 "use strict";
 
-var THREE = require('three'),
-    WebWorkerPool = require('./../utils/web-worker-pool'),
+var WebWorkerPool = require('./../utils/web-worker-pool'),
     materials = require('./../materials/materials'),
     Chunk = require('./../entities/chunk'),
     meshGeometryConversion = require('./mesh-geometry-conversion'),

@@ -1,4 +1,4 @@
-var THREE = require('three');
+"use strict";
 
 var groundGeometryConversion = function groundGeometryConversion (data) {
     var geometry = new THREE.BufferGeometry();

@@ -1,7 +1,6 @@
 "use strict";
 
-var THREE = require('three'),
-    isArray = require('is-array'),
+var isArray = require('is-array'),
     baseWidth = window.innerWidth,
     baseHeight = window.innerHeight,
     pixelRatio = 1; //(typeof window.devicePixelRatio !== 'undefined' ? window.devicePixelRatio : 1);

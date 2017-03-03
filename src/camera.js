@@ -1,7 +1,5 @@
 "use strict";
 
-var THREE = require('three');
-
 var Camera = function Camera (p1, p2) {
     THREE.PerspectiveCamera.call(this, p1, p2, 1, 50000);
 

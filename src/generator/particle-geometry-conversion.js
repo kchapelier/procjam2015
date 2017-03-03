@@ -1,7 +1,5 @@
 "use strict";
 
-var THREE = require('three');
-
 var particleGeometryConversion = function particleGeometryConversion (data) {
     var geometry = new THREE.BufferGeometry();
 
