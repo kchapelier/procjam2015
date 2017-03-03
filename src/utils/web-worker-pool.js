@@ -1,7 +1,5 @@
 "use strict";
 
-var EventEmitter = require('eventemitter3');
-
 var createWebWorkers = function createWebWorkers (script, number) {
     var workers = [],
         now = Date.now(),
@@ -22,7 +20,7 @@ var WebWorkerPool = function WebWorkerQueue (script, number) {
     this.iteration = 0;
     this.availableWorkers = [];
 
-    this.emitter = new EventEmitter();
+    this.listeners = {};
 
     var self = this;
 
@@ -40,7 +38,7 @@ var WebWorkerPool = function WebWorkerQueue (script, number) {
                 self.availableWorkers.push(worker);
             }
 
-            self.emitter.emit('message', e);
+            self.emitEvent('message', e);
         });
 
         worker.addEventListener('error', function onError (e) {
@@ -52,7 +50,7 @@ var WebWorkerPool = function WebWorkerQueue (script, number) {
                 self.availableWorkers.push(worker);
             }
 
-            self.emitter.emit('error', e);
+            self.emitEvent('error', e);
         });
     });
 };
@@ -77,8 +75,23 @@ WebWorkerPool.prototype.postMessage = function (aMessage, transferList) {
     worker.postMessage(aMessage, transferList);
 };
 
+WebWorkerPool.prototype.emitEvent = function (event, arg) {
+    var listeners = this.listeners[event],
+        i;
+
+    if (!!listeners) {
+        for (i = 0; i < listeners.length; i++) {
+            listeners[i](arg);
+        }
+    }
+};
+
 WebWorkerPool.prototype.addEventListener = function (event, callback) {
-    this.emitter.addListener(event, callback);
+    if (!this.listeners[event]) {
+        this.listeners[event] = [];
+    }
+
+    this.listeners[event].push(callback);
 };
 
 module.exports = WebWorkerPool;
