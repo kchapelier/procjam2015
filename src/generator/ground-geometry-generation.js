@@ -5,7 +5,7 @@ var THREE = require('three');
 
 var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, groundSegments) {
     var width = groundSegments + 1,
-        groundGeometry = new THREE.PlaneGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments);
+        groundGeometry = new THREE.PlaneBufferGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments);
 
     groundGeometry.rotateX(-Math.PI / 2);
 
@@ -13,13 +13,13 @@ var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, g
         for (var z = 0; z < width; z++) {
             var i = x + z * width;
 
-            groundGeometry.vertices[i].y = data[i];
+            groundGeometry.attributes.position.array[i*3+1] = data[i];
         }
     }
 
     groundGeometry.computeVertexNormals();
 
-    return new THREE.BufferGeometry().fromGeometry(groundGeometry);
+    return groundGeometry;
 };
 
 var groundGeometryData = function groundGeometryData (rng, offsetX, offsetZ, chunkSize, groundSegments) {
@@ -52,6 +52,7 @@ var groundGeometryData = function groundGeometryData (rng, offsetX, offsetZ, chu
     var bufferGeometry = prepareBufferGeometry(typedArray, segmentSize, groundSegments);
 
     return {
+        indices: bufferGeometry.index.array,
         position: bufferGeometry.attributes.position.array,
         normal: bufferGeometry.attributes.normal.array
     };
