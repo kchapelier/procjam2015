@@ -35,22 +35,16 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
         ));
     }
 
-    geometry.mergeVertices();
     geometry.rotateY((random() - 0.5) * Math.PI / 8);
     geometry.computeFaceNormals();
 
-    if (normalPerturb !== 0) {
-        for (i = 0; i < geometry.faces.length; i++) {
-            geometry.faces[i].normal.x += (random() - 0.5) * normalPerturb;
-            geometry.faces[i].normal.y += (random() - 0.5) * normalPerturb;
-            geometry.faces[i].normal.z += (random() - 0.5) * normalPerturb;
-        }
-
-        geometry.normalsNeedUpdate = true;
+    for (i = 0; i < geometry.faces.length; i++) {
+        geometry.faces[i].normal.x += (random() - 0.5) * normalPerturb;
+        geometry.faces[i].normal.y += (random() - 0.5) * normalPerturb;
+        geometry.faces[i].normal.z += (random() - 0.5) * normalPerturb;
     }
 
-    geometry.computeBoundingBox();
-    geometry.computeBoundingSphere();
+    geometry.normalsNeedUpdate = true;
 
     return new THREE.BufferGeometry().fromGeometry(geometry);
 };
