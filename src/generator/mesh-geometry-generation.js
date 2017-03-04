@@ -1,14 +1,14 @@
 "use strict";
 
-var THREE = require('three'),
-    voxel = require('voxel'),
+var voxel = require('voxel'),
     Poisson = require('poisson-disk-sampling'),
     CellularAutomata = require('cellular-automata');
+
+var computeVertexNormal = require('../utils/meshes/compute-vertex-normals');
 
 var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, widthBlocks, heightBlocks, depthBlocks, normalPerturb, rng) {
     var random = rng.random,
         width = 100,
-        geometry = new THREE.Geometry(),
         mWidth = widthBlocks * shape[0] / 2,
         mDepth = depthBlocks * shape[2] / 2,
         slantedX = random() * 50 - 25,
@@ -17,6 +17,35 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
         face,
         i;
 
+    var positions = new Float32Array(voxelData.faces.length * 9);
+    var normals = new Float32Array(voxelData.faces.length * 9);
+
+    for(i = 0; i < voxelData.faces.length; i++) {
+        face = voxelData.faces[i];
+        vertex = voxelData.vertices[face[0]];
+        positions[i * 9] = vertex[1] * slantedX + vertex[0] * widthBlocks - mWidth;
+        positions[i * 9 + 1] = vertex[1] * heightBlocks;
+        positions[i * 9 + 2] = vertex[1] * slantedZ + vertex[2] * depthBlocks - mDepth;
+
+        vertex = voxelData.vertices[face[1]];
+        positions[i * 9 + 3] = vertex[1] * slantedX + vertex[0] * widthBlocks - mWidth;
+        positions[i * 9 + 4] = vertex[1] * heightBlocks;
+        positions[i * 9 + 5] = vertex[1] * slantedZ + vertex[2] * depthBlocks - mDepth;
+
+        vertex = voxelData.vertices[face[2]];
+        positions[i * 9 + 6] = vertex[1] * slantedX + vertex[0] * widthBlocks - mWidth;
+        positions[i * 9 + 7] = vertex[1] * heightBlocks;
+        positions[i * 9 + 8] = vertex[1] * slantedZ + vertex[2] * depthBlocks - mDepth;
+    }
+
+    computeVertexNormal(null, positions, normals); // doesnt work
+
+    return {
+        position: positions,
+        normal: normals
+    };
+
+    /*
     for(i = 0; i < voxelData.vertices.length; ++i) {
         vertex = voxelData.vertices[i];
         geometry.vertices.push(new THREE.Vector3(
@@ -46,7 +75,13 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
 
     geometry.normalsNeedUpdate = true;
 
-    return new THREE.BufferGeometry().fromGeometry(geometry);
+    geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+
+    return {
+        position: geometry.attributes.position.array,
+        normal: geometry.attributes.normal.array
+    };
+    */
 };
 
 var getMeshFromVoxel = function getMeshFromVoxel (ndarray) {
@@ -212,10 +247,7 @@ var generateGeometryData = function generateGeometryData (rng, x, y) {
         voxelData = getMeshFromVoxel(ndarray),
         bufferGeometry = prepareBufferGeometry(voxelData, shape, 100, 100, 100, 0.08, rng);
 
-    return {
-        position: bufferGeometry.attributes.position.array,
-        normal: bufferGeometry.attributes.normal.array
-    };
+    return bufferGeometry;
 };
 
 module.exports = generateGeometryData;
