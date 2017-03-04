@@ -41,8 +41,6 @@ Player.prototype.update = function (dt, gravity, checkCollision) {
 
     if (this.viewYPlusCommand.active) {
         this.movement.y = this.viewYPlusCommand.value * 2.5;
-    } else {
-        this.movement.y = -this.viewYMinusCommand.value * 2;
     }
 
     if (this.actionCommand.down && this.jumpCount === 0) {
