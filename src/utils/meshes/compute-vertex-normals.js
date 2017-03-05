@@ -32,7 +32,6 @@ var computeVertexNormals = function (indices, positions, normals) {
         i;
 
     if (indices) {
-
         for (i = 0; i < indices.length; i += 3) {
 
             vA = indices[i] * 3;
@@ -96,7 +95,7 @@ var computeVertexNormals = function (indices, positions, normals) {
 
         }
     } else {
-        for ( i = 0; i < positions.length; i += 9 ) {
+        for (i = 0; i < positions.length; i += 9) {
 
             /*
              pA.fromArray( positions, i );
@@ -145,13 +144,13 @@ var computeVertexNormals = function (indices, positions, normals) {
             normals[ i + 1 ] = cb[1];
             normals[ i + 2 ] = cb[2];
 
-            normals[ i + 3 ] = cb[3];
-            normals[ i + 4 ] = cb[4];
-            normals[ i + 5 ] = cb[5];
+            normals[ i + 3 ] = cb[0];
+            normals[ i + 4 ] = cb[1];
+            normals[ i + 5 ] = cb[2];
 
-            normals[ i + 6 ] = cb[6];
-            normals[ i + 7 ] = cb[7];
-            normals[ i + 8 ] = cb[8];
+            normals[ i + 6 ] = cb[0];
+            normals[ i + 7 ] = cb[1];
+            normals[ i + 8 ] = cb[2];
         }
     }
 
