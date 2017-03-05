@@ -47,8 +47,8 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
     }
 
     return {
-        position: positions,
-        normal: normals
+        position: positions.buffer,
+        normal: normals.buffer
     };
 
     /*

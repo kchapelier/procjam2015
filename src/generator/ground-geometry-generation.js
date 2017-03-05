@@ -93,10 +93,10 @@ var generarePlaneGeometry = function generarePlaneGeometry (width, height, width
 
 
     return {
-        indices: indices,
-        position: vertices,
-        normal: normals,
-        uv: uvs
+        indices: indices.buffer,
+        position: vertices.buffer,
+        normal: normals.buffer,
+        uv: uvs.buffer
     };
 };
 

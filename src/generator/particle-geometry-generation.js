@@ -16,8 +16,8 @@ var generateGeometryData = function generateGeometryData (radiusX, radiusY, radi
     }
 
     return {
-        positions : positions,
-        offsets : offsets
+        position : positions.buffer,
+        offset : offsets.buffer
     };
 };
 
