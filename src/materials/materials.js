@@ -18,7 +18,7 @@ var materials = {
         side: THREE.DoubleSide
     }),
     sand: new THREE.MeshPhongMaterial({
-        color: 0xB9B992,
+        color: 0xC0C095,
         specular: 0x20200A,
         shininess: 12,
         shading: THREE.SmoothShading,

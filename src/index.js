@@ -3,7 +3,7 @@
 var GameLoop = require('migl-gameloop'),
     renderer = require('./renderer'),
     Camera = require('./camera'),
-    camera = new Camera(70, renderer.screenWidth / renderer.screenHeight),
+    camera = new Camera(70, renderer.screenWidth / renderer.screenHeight, 0, 120),
     pointer = require('./pointer'),
     input = require('./input'),
     fullscreen = require('./fullscreen'),

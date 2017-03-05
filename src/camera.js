@@ -1,13 +1,13 @@
 "use strict";
 
-var Camera = function Camera (p1, p2) {
+var Camera = function Camera (p1, p2, lat, lon) {
     THREE.PerspectiveCamera.call(this, p1, p2, 1, 50000);
 
     this.position.set(50, 50, 50);
 
     this.target = new THREE.Vector3(0,0,0);
-    this.lat = 0;
-    this.lon = 0;
+    this.lat = lat;
+    this.lon = lon;
     this.phi = 0;
     this.theta = 0;
 };
