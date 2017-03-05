@@ -22,8 +22,8 @@ var generarePlaneGeometry = function generarePlaneGeometry (width, height, width
     // buffers
     var indices = new Uint16Array(6 * gridX * gridY),
         vertices = new Float32Array(3 * gridX1 * gridY1),
-        normals = new Float32Array(3 * gridX1 * gridY1);
-        //uvs = [];
+        normals = new Float32Array(3 * gridX1 * gridY1),
+        uvs = new Float32Array(2 * gridX1 * gridY1);
 
     // generate vertices, normals and uvs
 
@@ -49,11 +49,12 @@ var generarePlaneGeometry = function generarePlaneGeometry (width, height, width
 
             //normals.push( 0, 1, 0 );
 
-            /*
-            uvs.push( ix / gridX );
-            uvs.push( 1 - ( iy / gridY ) );
-            */
 
+            uvs[2 * (iy * gridX1 + ix)] = ix / gridX * 32;
+            uvs[2 * (iy * gridX1 + ix) + 1] = 1 - ( iy / gridY ) * 32;
+
+            // uvs.push( ix / gridX );
+            // uvs.push( 1 - ( iy / gridY ) );
         }
 
     }
@@ -94,7 +95,8 @@ var generarePlaneGeometry = function generarePlaneGeometry (width, height, width
     return {
         indices: indices,
         position: vertices,
-        normal: normals
+        normal: normals,
+        uv: uvs
     };
 };
 
