@@ -38,7 +38,13 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
         positions[i * 9 + 8] = vertex[1] * slantedZ + vertex[2] * depthBlocks - mDepth;
     }
 
-    computeVertexNormal(null, positions, normals); // doesnt work
+    computeVertexNormal(null, positions, normals);
+
+    for (i = 0; i < normals.length; i+=9) {
+        normals[i + 3] = normals[i + 6] = (normals[i] += (Math.random() - 0.5) * normalPerturb);
+        normals[i + 4] = normals[i + 7] = (normals[i + 1] += (Math.random() - 0.5) * normalPerturb);
+        normals[i + 5] = normals[i + 8] = (normals[i + 2] += (Math.random() - 0.5) * normalPerturb);
+    }
 
     return {
         position: positions,
