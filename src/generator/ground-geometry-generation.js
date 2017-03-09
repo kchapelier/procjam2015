@@ -35,10 +35,10 @@ var generatePlaneGeometry = function generatePlaneGeometry (width, height, width
 
     // generate vertices, normals and uvs
 
-    for ( iy = 0; iy < gridY1; iy ++ ) {
+    for ( iy = 0; iy < gridY1; iy++ ) {
         var y = iy * segment_height - height_half;
 
-        for ( ix = 0; ix < gridX1; ix ++ ) {
+        for ( ix = 0; ix < gridX1; ix++ ) {
             var x = ix * segment_width - width_half;
 
             vertices[3 * (iy * gridX1 + ix)] = x;
