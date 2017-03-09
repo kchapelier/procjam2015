@@ -134,16 +134,20 @@ World.prototype.unloadDistantChunks = function (maxDistance) {
 
         if (distance > maxDistance) {
             this.renderer.removeFromScene(chunk.ground);
+            chunk.ground.geometry.dispose();
 
             if(chunk.building) {
                 this.renderer.removeFromScene(chunk.building);
+                chunk.building.geometry.dispose();
             }
 
             if(chunk.particles) {
                 this.renderer.removeFromScene(chunk.particles);
+                chunk.particles.geometry.dispose();
             }
 
-            this.chunks[key] = false;
+            this.chunks[key] = null;
+            delete this.chunks[key];
         }
     }
 };
