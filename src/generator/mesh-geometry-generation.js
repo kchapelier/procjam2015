@@ -17,8 +17,9 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
         face,
         i;
 
-    var positions = new Float32Array(voxelData.faces.length * 9);
-    var normals = new Float32Array(voxelData.faces.length * 9);
+    var arrayBuffer = new ArrayBuffer(voxelData.faces.length * 9 * 2 * 4),
+        positions = new Float32Array(arrayBuffer, 0, voxelData.faces.length * 9),
+        normals = new Float32Array(arrayBuffer, voxelData.faces.length * 9 * 4, voxelData.faces.length * 9);
 
     for(i = 0; i < voxelData.faces.length; i++) {
         face = voxelData.faces[i];
@@ -47,47 +48,8 @@ var prepareBufferGeometry = function prepareBufferGeometry (voxelData, shape, wi
     }
 
     return {
-        position: positions.buffer,
-        normal: normals.buffer
+        buffer: arrayBuffer
     };
-
-    /*
-    for(i = 0; i < voxelData.vertices.length; ++i) {
-        vertex = voxelData.vertices[i];
-        geometry.vertices.push(new THREE.Vector3(
-            vertex[1] * slantedX + (vertex[0]) * widthBlocks - mWidth,
-            (vertex[1]) * heightBlocks,
-            vertex[1] * slantedZ + (vertex[2]) * depthBlocks - mDepth
-        ));
-    }
-
-    for(i = 0; i < voxelData.faces.length; ++i) {
-        face = voxelData.faces[i];
-        geometry.faces.push(new THREE.Face3(
-            face[0],
-            face[1],
-            face[2]
-        ));
-    }
-
-    geometry.rotateY((random() - 0.5) * Math.PI / 8);
-    geometry.computeFaceNormals();
-
-    for (i = 0; i < geometry.faces.length; i++) {
-        geometry.faces[i].normal.x += (random() - 0.5) * normalPerturb;
-        geometry.faces[i].normal.y += (random() - 0.5) * normalPerturb;
-        geometry.faces[i].normal.z += (random() - 0.5) * normalPerturb;
-    }
-
-    geometry.normalsNeedUpdate = true;
-
-    geometry = new THREE.BufferGeometry().fromGeometry(geometry);
-
-    return {
-        position: geometry.attributes.position.array,
-        normal: geometry.attributes.normal.array
-    };
-    */
 };
 
 var getMeshFromVoxel = function getMeshFromVoxel (ndarray) {

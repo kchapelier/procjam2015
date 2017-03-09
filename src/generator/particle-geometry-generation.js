@@ -3,8 +3,9 @@
 // we don't really care about the position of the particles, lets just use Math.random
 
 var generateGeometryData = function generateGeometryData (radiusX, radiusY, radiusZ, particles) {
-    var positions = new Float32Array( particles * 3),
-        offsets = new Float32Array( particles),
+    var arrayBuffer = new ArrayBuffer(particles * 16),
+        positions = new Float32Array(arrayBuffer, 0, particles * 3),
+        offsets = new Float32Array(arrayBuffer, particles * 12, particles),
         i;
 
     for (i = 0; i < particles; i++) {
@@ -16,8 +17,7 @@ var generateGeometryData = function generateGeometryData (radiusX, radiusY, radi
     }
 
     return {
-        position : positions.buffer,
-        offset : offsets.buffer
+        buffer : arrayBuffer
     };
 };
 

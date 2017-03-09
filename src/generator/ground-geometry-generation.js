@@ -4,7 +4,7 @@
 
 var computeVertexNormals = require('../utils/meshes/compute-vertex-normals');
 
-var generarePlaneGeometry = function generarePlaneGeometry (width, height, widthSegments, heightSegments, heightmap) {
+var generatePlaneGeometry = function generatePlaneGeometry (width, height, widthSegments, heightSegments, heightmap) {
     var width_half = width / 2;
     var height_half = height / 2;
 
@@ -19,52 +19,41 @@ var generarePlaneGeometry = function generarePlaneGeometry (width, height, width
 
     var ix, iy;
 
+    //lengths
+    var vertexNumber = gridX * gridY,
+        indexLength = 6 * gridX * gridY * 2,
+        vertexLength = 3 * gridX1 * gridY1 * 4,
+        normalLength = 3 * gridX1 * gridY1 * 4,
+        uvLength = 2 * gridX1 * gridY1 * 4;
+
     // buffers
-    var indices = new Uint16Array(6 * gridX * gridY),
-        vertices = new Float32Array(3 * gridX1 * gridY1),
-        normals = new Float32Array(3 * gridX1 * gridY1),
-        uvs = new Float32Array(2 * gridX1 * gridY1);
+    var arrayBuffer = new ArrayBuffer(indexLength + vertexLength + normalLength + uvLength),
+        indices = new Uint16Array(arrayBuffer, 0, indexLength / 2),
+        vertices = new Float32Array(arrayBuffer, indexLength, vertexLength / 4),
+        normals = new Float32Array(arrayBuffer, indexLength + vertexLength, normalLength / 4),
+        uvs = new Float32Array(arrayBuffer, indexLength + vertexLength + normalLength, uvLength / 4);
 
     // generate vertices, normals and uvs
 
     for ( iy = 0; iy < gridY1; iy ++ ) {
-
         var y = iy * segment_height - height_half;
 
         for ( ix = 0; ix < gridX1; ix ++ ) {
-
             var x = ix * segment_width - width_half;
 
             vertices[3 * (iy * gridX1 + ix)] = x;
             vertices[3 * (iy * gridX1 + ix) + 1] = heightmap[iy * gridX1 + ix];
             vertices[3 * (iy * gridX1 + ix) + 2] = y;
 
-            //vertices.push( x, 0, y );
-
-            /*
-            normals[3 * (iy * gridX1 + ix)] = 0;
-            normals[3 * (iy * gridX1 + ix) + 1] = 1;
-            normals[3 * (iy * gridX1 + ix) + 2] = 0;
-            */
-
-            //normals.push( 0, 1, 0 );
-
-
             uvs[2 * (iy * gridX1 + ix)] = ix / gridX * 32;
             uvs[2 * (iy * gridX1 + ix) + 1] = 1 - ( iy / gridY ) * 32;
-
-            // uvs.push( ix / gridX );
-            // uvs.push( 1 - ( iy / gridY ) );
         }
-
     }
 
     // indices
 
     for ( iy = 0; iy < gridY; iy ++ ) {
-
         for ( ix = 0; ix < gridX; ix ++ ) {
-
             var a = ix + gridX1 * iy,
                 b = ix + gridX1 * ( iy + 1 ),
                 c = ( ix + 1 ) + gridX1 * ( iy + 1 ),
@@ -77,33 +66,22 @@ var generarePlaneGeometry = function generarePlaneGeometry (width, height, width
             indices[6 * (iy * gridX + ix) + 3] = b;
             indices[6 * (iy * gridX + ix) + 4] = c;
             indices[6 * (iy * gridX + ix) + 5] = d;
-
-            /*
-            indices.push( a, b, d );
-            indices.push( b, c, d );
-            */
         }
-
     }
 
     // compute normals
     computeVertexNormals(indices, vertices, normals);
 
-    // build geometry
-
-
     return {
-        indices: indices.buffer,
-        position: vertices.buffer,
-        normal: normals.buffer,
-        uv: uvs.buffer
+        indices: indexLength,
+        buffer: arrayBuffer
     };
 };
 
 var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, groundSegments) {
     var width = groundSegments + 1;
 
-    var simpleGeometry = generarePlaneGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments, data);
+    var simpleGeometry = generatePlaneGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments, data);
 
     return simpleGeometry;
 

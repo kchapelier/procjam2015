@@ -26,21 +26,16 @@ self.addEventListener('message', function onMessage (e) {
         }
     };
 
-    var transferables = [
-        response.result.ground.indices,
-        response.result.ground.position,
-        response.result.ground.normal,
-        response.result.ground.uv
-    ];
+    var transferables = [response.result.ground.buffer];
 
     if (needBuilding) {
         response.result.mesh = meshGeometryGeneration(buildingRng, x, y);
-        transferables.push(response.result.mesh.position, response.result.mesh.normal);
+        transferables.push(response.result.mesh.buffer);
     }
 
     if (includeParticles && needBuilding) {
         response.result.particle = particleGeometryGeneration(1800, 2500, 1800, 2000);
-        transferables.push(response.result.particle.position, response.result.particle.offset);
+        transferables.push(response.result.particle.buffer);
     }
 
     self.postMessage(response, transferables);
