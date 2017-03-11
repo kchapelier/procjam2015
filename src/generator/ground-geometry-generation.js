@@ -5,19 +5,16 @@
 var computeVertexNormals = require('../utils/meshes/compute-vertex-normals');
 
 var generatePlaneGeometry = function generatePlaneGeometry (width, height, widthSegments, heightSegments, heightmap, offset) {
-    var width_half = width / 2;
-    var height_half = height / 2;
-
-    var gridX = Math.floor( widthSegments ) || 1;
-    var gridY = Math.floor( heightSegments ) || 1;
-
-    var gridX1 = gridX + 1;
-    var gridY1 = gridY + 1;
-
-    var segment_width = width / gridX;
-    var segment_height = height / gridY;
-
-    var ix, iy;
+    var width_half = width / 2,
+        height_half = height / 2,
+        gridX = widthSegments,
+        gridY = heightSegments,
+        gridX1 = gridX + 1,
+        gridY1 = gridY + 1,
+        segment_width = width / gridX,
+        segment_height = height / gridY,
+        ix, iy, y, x, idx,
+        a, b, c, d;
 
     //lengths
     var vertexNumber = gridX * gridY,
@@ -34,44 +31,43 @@ var generatePlaneGeometry = function generatePlaneGeometry (width, height, width
         uvs = new Float32Array(arrayBuffer, indexLength + vertexLength + normalLength, uvLength / 4);
 
     // generate vertices, normals and uvs
+    for (iy = 0; iy < gridY1; iy++) {
+        y = iy * segment_height - height_half;
 
-    for ( iy = 0; iy < gridY1; iy++ ) {
-        var y = iy * segment_height - height_half;
+        for (ix = 0; ix < gridX1; ix++) {
+            x = ix * segment_width - width_half;
+            idx = iy * gridX1 + ix;
 
-        for ( ix = 0; ix < gridX1; ix++ ) {
-            var x = ix * segment_width - width_half;
+            vertices[3 * idx] = x;
+            vertices[3 * idx + 1] = heightmap[(iy + offset) * (gridX1 + offset * 2) + ix + offset];
+            vertices[3 * idx + 2] = y;
 
-            vertices[3 * (iy * gridX1 + ix)] = x;
-            vertices[3 * (iy * gridX1 + ix) + 1] = heightmap[(iy + offset) * (gridX1 + offset * 2) + ix + offset];
-            vertices[3 * (iy * gridX1 + ix) + 2] = y;
-
-            uvs[2 * (iy * gridX1 + ix)] = ix / gridX * 32;
-            uvs[2 * (iy * gridX1 + ix) + 1] = 1 - ( iy / gridY ) * 32;
+            uvs[2 * idx] = ix / gridX * 32;
+            uvs[2 * idx + 1] = 1 - iy / gridY * 32;
         }
     }
 
-    // indices
-
-    for ( iy = 0; iy < gridY; iy ++ ) {
-        for ( ix = 0; ix < gridX; ix ++ ) {
-            var a = ix + gridX1 * iy,
-                b = ix + gridX1 * ( iy + 1 ),
-                c = ( ix + 1 ) + gridX1 * ( iy + 1 ),
-                d = ( ix + 1 ) + gridX1 * iy;
+    // set indices
+    for (iy = 0; iy < gridY; iy++) {
+        for (ix = 0; ix < gridX; ix++) {
+            a = ix + gridX1 * iy;
+            b = ix + gridX1 * (iy + 1);
+            c = (ix + 1) + gridX1 * (iy + 1);
+            d = (ix + 1) + gridX1 * iy;
+            idx = iy * gridX + ix;
 
             // faces
-            indices[6 * (iy * gridX + ix)] = a;
-            indices[6 * (iy * gridX + ix) + 1] = b;
-            indices[6 * (iy * gridX + ix) + 2] = d;
-            indices[6 * (iy * gridX + ix) + 3] = b;
-            indices[6 * (iy * gridX + ix) + 4] = c;
-            indices[6 * (iy * gridX + ix) + 5] = d;
+            indices[6 * idx] = a;
+            indices[6 * idx + 1] = b;
+            indices[6 * idx + 2] = d;
+            indices[6 * idx + 3] = b;
+            indices[6 * idx + 4] = c;
+            indices[6 * idx + 5] = d;
         }
     }
 
     // compute normals
     computeVertexNormals.fromHeightMap(heightmap, gridX1, gridY1, normals);
-    //computeVertexNormals(indices, vertices, normals);
 
     return {
         indices: indexLength,
@@ -88,21 +84,19 @@ var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, g
 
 var groundGeometryData = function groundGeometryData (rng, offsetX, offsetZ, chunkSize, groundSegments) {
     var segmentSize = chunkSize / groundSegments,
-        ratioGeneration = segmentSize / 100, // the algorithm was originally written for segmentSize of 100, we don't want the result to be dramatically different depending on the segmentSize
-
+        // the algorithm was originally written for segmentSize of 100, we don't want the result to be dramatically different depending on the segmentSize
+        ratioGeneration = segmentSize / 100,
+        width = groundSegments + 3,
+        typedArray = new Float32Array(width * width),
         x,
         y,
         z,
         dist,
         offsettedX, offsettedZ;
 
-
-
     offsetX = offsetX * groundSegments;
     offsetZ = offsetZ * groundSegments;
 
-    var width = groundSegments + 3,
-        typedArray = new Float32Array(width * width);
     for (x = 0; x < width; x++) {
         offsettedX = (x + offsetX) * ratioGeneration;
         for (z = 0; z < width; z++) {

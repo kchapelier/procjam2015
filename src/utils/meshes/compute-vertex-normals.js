@@ -1,125 +1,78 @@
 "use strict";
 
-var normalizeNormals = function (normals) {
+var normalizeNormals = function normalizeNormals (normals) {
     var i, x, y, z, n;
 
-    for ( i = 0; i < normals.length; i += 3 ) {
+    for (i = 0; i < normals.length; i+= 3) {
         x = normals[i];
         y = normals[i + 1];
         z = normals[i + 2];
 
-        n = 1.0 / Math.sqrt( x * x + y * y + z * z );
+        n = 1.0 / Math.sqrt(x * x + y * y + z * z);
 
-        normals[i] *= n;
-        normals[i + 1] *= n;
-        normals[i + 2] *= n;
+        normals[i]*= n;
+        normals[i + 1]*= n;
+        normals[i + 2]*= n;
     }
 
 };
 
-var computeHeightMapNormals = function (heightmap, width, height, normals) {
-    for (var x = 0; x < width; x++) {
-        for (var y = 0; y < height; y++) {
-            var ty = y + 1;
-            var tx = x + 1;
+var computeHeightMapNormals = function computeHeightMapNormals (heightmap, width, height, normals) {
+    var ratio = 100*64/width,
+        widthPlus2 = width + 2,
+        x,
+        y,
+        idx,
+        ty,
+        tx,
+        vMz,
+        vEx, vEy, vEz,
+        vWx, vWy, vWz,
+        vNx, vNy, vNz,
+        vSx, vSy, vSz;
 
-            var P = heightmap[ty * (width + 2) + tx];
+    for (x = 0; x < width; x++) {
+        for (y = 0; y < height; y++) {
+            ty = y + 1;
+            tx = x + 1;
+            idx = (y * width + x) * 3;
 
-            var vEx = tx;
-            var vWx = tx;
-            var vNx = tx + 1;
-            var vSx = x;
+            vEx = tx;
+            vWx = tx;
+            vNx = tx + 1;
+            vSx = x;
+            vEy = y;
+            vWy = ty + 1;
+            vNy = ty;
+            vSy = ty;
 
-            var vEy = y;
-            var vWy = ty + 1;
-            var vNy = ty;
-            var vSy = ty;
+            vMz = heightmap[ty * widthPlus2 + tx];
+            vEz = heightmap[vEy * widthPlus2 + vEx] - vMz;
+            vWz = heightmap[vWy * widthPlus2 + vWx] - vMz;
+            vNz = heightmap[vNy * widthPlus2 + vNx] - vMz;
+            vSz = heightmap[vSy * widthPlus2 + vSx] - vMz;
 
-            var vEz = heightmap[vEy * (width + 2) + vEx] - P;
-            var vWz = heightmap[vWy * (width + 2) + vWx] - P;
-            var vNz = heightmap[vNy * (width + 2) + vNx] - P;
-            var vSz = heightmap[vSy * (width + 2) + vSx] - P;
+            vEx*= ratio;
+            vWx*= ratio;
+            vNx*= ratio;
+            vSx*= ratio;
+            vEy*= ratio;
+            vWy*= ratio;
+            vNy*= ratio;
+            vSy*= ratio;
 
-            /*
-            vEz*= -1;
-            vWz*= -1;
-            vNz*= -1;
-            vSz*= -1;
-            */
+            //normal = vN.cross(vE) + vE.cross(vS) + vS.cross(vW) + vW.cross(vN)
 
-            vEx*= 90*64/width;
-            vWx*= 90*64/width;
-            vNx*= 90*64/width;
-            vSx*= 90*64/width;
-
-            vEy*= 90*64/width;
-            vWy*= 90*64/width;
-            vNy*= 90*64/width;
-            vSy*= 90*64/width;
-
-            /*
-            var _vEx = vEx,
-                _vWx = vWx,
-                _vNx = vNx,
-                _vSx = vSx;
-
-            vEx = vEy;
-            vWx = vWy;
-            vNx = vNy;
-            vSx = vSy;
-
-            vEy = _vEx;
-            vWy = _vWx;
-            vNy = _vNx;
-            vSy = _vSx;
-            */
-
-            /*
-            A.cross(B);
-
-             R+= A[1] * B[2] - A[2] * B[1];
-             G+= A[2] * B[0] - A[0] * B[2];
-             B+= A[0] * B[1] - A[1] * B[0];
-             */
-
-            var R = 0;
-            var G = 0;
-            var B = 0;
-
-            //vN.cross(vE)
-
-            R+=vNy * vEz - vNz * vEy;
-            G+=vNz * vEx - vNx * vEz;
-            B+=vNx * vEy - vNy * vEx;
-
-            //vE.cross(vS)
-
-            R+= vEy * vSz - vEz * vSy;
-            G+= vEz * vSx - vEx * vSz;
-            B+= vEx * vSy - vEy * vSx;
-
-            //vS.cross(vW)
-
-            R+= vSy * vWz - vSz * vWy;
-            G+= vSz * vWx - vSx * vWz;
-            B+= vSx * vWy - vSy * vWx;
-
-            //vW.cross(vN)
-
-            R+= vWy * vNz - vWz * vNy;
-            G+= vWz * vNx - vWx * vNz;
-            B+= vWx * vNy - vWy * vNx;
-
-            normals[3 * (y * width + x)] = R/-4;
-            normals[3 * (y * width + x) + 1] = B/-4;
-            normals[3 * (y * width + x) + 2] = G/-4;
+            normals[idx] = (vNy * vEz - vNz * vEy + vEy * vSz - vEz * vSy + vSy * vWz - vSz * vWy + vWy * vNz - vWz * vNy) / -4;
+            normals[idx + 1] = (vNx * vEy - vNy * vEx + vEx * vSy - vEy * vSx + vSx * vWy - vSy * vWx + vWx * vNy - vWy * vNx) / -4;
+            normals[idx + 2] = (vNz * vEx - vNx * vEz + vEz * vSx - vEx * vSz + vSz * vWx - vSx * vWz + vWz * vNx - vWx * vNz) / -4;
         }
     }
 
     normalizeNormals(normals);
 };
 
-var computeVertexNormals = function (indices, positions, normals) {
+var computeVertexNormals = function computeVertexNormals (indices, positions, normals) {
     var pA = [0,0,0],
         pB = [0,0,0],
         pC = [0,0,0],
