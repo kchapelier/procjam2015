@@ -4,7 +4,7 @@
 
 var computeVertexNormals = require('../utils/meshes/compute-vertex-normals');
 
-var generatePlaneGeometry = function generatePlaneGeometry (width, height, widthSegments, heightSegments, heightmap) {
+var generatePlaneGeometry = function generatePlaneGeometry (width, height, widthSegments, heightSegments, heightmap, offset) {
     var width_half = width / 2;
     var height_half = height / 2;
 
@@ -42,7 +42,7 @@ var generatePlaneGeometry = function generatePlaneGeometry (width, height, width
             var x = ix * segment_width - width_half;
 
             vertices[3 * (iy * gridX1 + ix)] = x;
-            vertices[3 * (iy * gridX1 + ix) + 1] = heightmap[iy * gridX1 + ix];
+            vertices[3 * (iy * gridX1 + ix) + 1] = heightmap[(iy + offset) * (gridX1 + offset * 2) + ix + offset];
             vertices[3 * (iy * gridX1 + ix) + 2] = y;
 
             uvs[2 * (iy * gridX1 + ix)] = ix / gridX * 32;
@@ -70,7 +70,8 @@ var generatePlaneGeometry = function generatePlaneGeometry (width, height, width
     }
 
     // compute normals
-    computeVertexNormals(indices, vertices, normals);
+    computeVertexNormals.fromHeightMap(heightmap, gridX1, gridY1, normals);
+    //computeVertexNormals(indices, vertices, normals);
 
     return {
         indices: indexLength,
@@ -78,10 +79,8 @@ var generatePlaneGeometry = function generatePlaneGeometry (width, height, width
     };
 };
 
-var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, groundSegments) {
-    var width = groundSegments + 1;
-
-    var simpleGeometry = generatePlaneGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments, data);
+var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, groundSegments, offset) {
+    var simpleGeometry = generatePlaneGeometry(groundSegments * segmentSize, groundSegments * segmentSize, groundSegments, groundSegments, data, offset);
 
     return simpleGeometry;
 
@@ -90,17 +89,20 @@ var prepareBufferGeometry = function prepareBufferGeometry (data, segmentSize, g
 var groundGeometryData = function groundGeometryData (rng, offsetX, offsetZ, chunkSize, groundSegments) {
     var segmentSize = chunkSize / groundSegments,
         ratioGeneration = segmentSize / 100, // the algorithm was originally written for segmentSize of 100, we don't want the result to be dramatically different depending on the segmentSize
-        width = groundSegments + 1,
-        typedArray = new Float32Array(width * width),
+
         x,
         y,
         z,
         dist,
         offsettedX, offsettedZ;
 
+
+
     offsetX = offsetX * groundSegments;
     offsetZ = offsetZ * groundSegments;
 
+    var width = groundSegments + 3,
+        typedArray = new Float32Array(width * width);
     for (x = 0; x < width; x++) {
         offsettedX = (x + offsetX) * ratioGeneration;
         for (z = 0; z < width; z++) {
@@ -114,7 +116,7 @@ var groundGeometryData = function groundGeometryData (rng, offsetX, offsetZ, chu
         }
     }
 
-    return prepareBufferGeometry(typedArray, segmentSize, groundSegments);
+    return prepareBufferGeometry(typedArray, segmentSize, groundSegments, 1);
 };
 
 module.exports = groundGeometryData;
