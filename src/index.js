@@ -15,7 +15,7 @@ var GameLoop = require('migl-gameloop'),
     sound = require('./sound');
 
 var loadSounds = function loadSounds () {
-    sound.load('music', 'procjam', 1, true, true);
+    sound.load('music', 'procjam', 0.5, true, true);
 };
 
 var World = require('./world');
@@ -74,7 +74,7 @@ var init = function init () {
         directionalLight = new THREE.DirectionalLight( 0xffffff, 0.55),
         hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x111111, 1.5),
         sun = new Sun(),
-        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh, materials.dust);
+        dayNightCycle = new DayNightCycle(renderer.renderer, renderer.scene.fog, directionalLight, hemisphereLight, sun.mesh, materials.dust, materials.sand);
 
     renderer.addToScene(sun.mesh);
     renderer.addToScene(hemisphereLight);

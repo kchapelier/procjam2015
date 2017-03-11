@@ -20,7 +20,11 @@ var maxFog = 0.00045,
     fogColorBlue = [0xA9 / 255, 0xA9 / 255, 0x80 / 255, 0x66 / 255],
     sunColorRed = [0xF5 / 255, 0xF5 / 255],
     sunColorGreen = [0xF5 / 255, 0xC0 / 255],
-    sunColorBlue = [0xD0 / 255, 0x80 / 255];
+    sunColorBlue = [0xD0 / 255, 0x80 / 255],
+    sandShininess = [12,20],
+    sandSpecularRed = [0x99 / 255, 0x10 / 255],
+    sandSpecularGreen = [0x99 / 255, 0x10 / 255],
+    sandSpecularBlue = [0x66 / 255, 0x06 / 255];
 
 var wshaper = function wshaper (value, shape) {
     value *= shape.length - 1;
@@ -37,13 +41,14 @@ var wshaper = function wshaper (value, shape) {
     return value;
 };
 
-var DayNightCycle = function DayNightCycle (renderer, fog, directionalLight, hemisphereLight, sun, shaderMaterial) {
+var DayNightCycle = function DayNightCycle (renderer, fog, directionalLight, hemisphereLight, sun, shaderMaterial, sandMaterial) {
     this.renderer = renderer;
     this.fog = fog;
     this.directionalLight = directionalLight;
     this.hemisphereLight = hemisphereLight;
     this.sun = sun;
     this.shaderMaterial = shaderMaterial;
+    this.sandMaterial = sandMaterial;
     this.time = 0;
 };
 
@@ -55,13 +60,24 @@ DayNightCycle.prototype.update = function (player, dt) {
         ratioFog = Math.abs(Math.sin(rampTimePi)),
         positionSunX = Math.sin(rampTimePi * 2),
         positionSunY = Math.cos(rampTimePi * 2),
-        ratioSun = Math.pow(1 - Math.max(positionSunY, 0), 3);
+        ratioSun = (1 - Math.max(positionSunY, 0)),
+        ratioSunP3 = Math.pow(ratioSun, 3);
 
     this.sun.material.color.setRGB(
-        wshaper(ratioSun, sunColorRed),
-        wshaper(ratioSun, sunColorGreen),
-        wshaper(ratioSun, sunColorBlue)
+        wshaper(ratioSunP3, sunColorRed),
+        wshaper(ratioSunP3, sunColorGreen),
+        wshaper(ratioSunP3, sunColorBlue)
     );
+
+    if (!this.sandMaterial.old) {
+        this.sandMaterial.specular.setRGB(
+            wshaper(ratioSun, sandSpecularRed),
+            wshaper(ratioSun, sandSpecularGreen),
+            wshaper(ratioSun, sandSpecularBlue)
+        );
+
+        this.sandMaterial.shininess = wshaper(ratioSunP3, sandShininess);
+    }
 
     this.fog.density = ratioFog * maxFog + (1 - ratioFog) * minFog; //lerp
 

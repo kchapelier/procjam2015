@@ -17,13 +17,19 @@ var materials = {
     debug: new THREE.MeshNormalMaterial({
         side: THREE.DoubleSide
     }),
+    oldSand: new THREE.MeshPhongMaterial({
+        color: 0xCCCCAA,
+        specular: 0x202020,
+        shininess: 8,
+        shading: THREE.SmoothShading
+    }),
     sand: new THREE.MeshPhongMaterial({
-        color: 0xC0C095,
-        specular: 0x20200A,
-        shininess: 12,
+        color: 0xC2C295,
+        specular: 0xBBBB88,//22220C,
+        shininess: 10,
         shading: THREE.SmoothShading,
-        normalMap: loadTexture('./assets/images/sand-normalmap.jpg', 4),
-        normalScale: new THREE.Vector2(0.225,0.225)
+        normalMap: loadTexture('./assets/images/sand-normalmap.jpg', 2),
+        normalScale: new THREE.Vector2(0.82, 0.82)
     }),
     building: new THREE.MeshStandardMaterial({
         color: 0x6C6C6C,
@@ -53,5 +59,7 @@ var materials = {
         transparent: true
     })
 };
+
+materials.oldSand.old = true;
 
 module.exports = materials;
