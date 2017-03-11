@@ -21,7 +21,7 @@ var maxFog = 0.00045,
     sunColorRed = [0xF5 / 255, 0xF5 / 255],
     sunColorGreen = [0xF5 / 255, 0xC0 / 255],
     sunColorBlue = [0xD0 / 255, 0x80 / 255],
-    sandShininess = [12,20],
+    sandShininess = [12,17],
     sandSpecularRed = [0x99 / 255, 0x10 / 255],
     sandSpecularGreen = [0x99 / 255, 0x10 / 255],
     sandSpecularBlue = [0x66 / 255, 0x06 / 255];
@@ -76,7 +76,7 @@ DayNightCycle.prototype.update = function (player, dt) {
             wshaper(ratioSun, sandSpecularBlue)
         );
 
-        this.sandMaterial.shininess = wshaper(ratioSunP3, sandShininess);
+        this.sandMaterial.shininess = wshaper(ratioSun, sandShininess);
     }
 
     this.fog.density = ratioFog * maxFog + (1 - ratioFog) * minFog; //lerp
